@@ -112,7 +112,7 @@ public class TamosTeleop extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
 
-        // Parts init ---------------------------------------
+        // Parts init ----------------------------------------
 
         GamepadEx driver1 = new GamepadEx(gamepad1);
         GamepadEx driver2 = new GamepadEx(gamepad2);
