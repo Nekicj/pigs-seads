@@ -32,6 +32,14 @@ public class TamosTeleop extends LinearOpMode {
     public static double IntakeNormalPosition = 0;
 
 
+    public static double IntakeRotatePos1 = 0;
+    public static double IntakeRotatePos2 = 0.25;
+    public static double IntakeRotatePos3 = 0.5;
+    public static double IntakeRotatePos4 = 0.75;
+    public static double IntakeRotatePos5 = 1;
+
+
+
 
 
     private boolean isClawing = false;
@@ -103,6 +111,7 @@ public class TamosTeleop extends LinearOpMode {
 
     int isClawingState = 0;
     int isExtendState = 0;
+    private int rotateState = 1;
 
 
     // Times -----------------------------------------------
@@ -284,13 +293,17 @@ public class TamosTeleop extends LinearOpMode {
                 Intake.setPosition(IntakeClawOpen);
             }
 
-            if (driver1.isDown(GamepadKeys.Button.LEFT_BUMPER) && rotateServoPosition > 0){    //turn right
-                rotateServoPosition -= rotateServoSpeed;
+            if (driver1.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER) && rotateState < 6){    //turn right && rotateServoPosition > 0
+                rotateState += 1;
+                //rotateServoPosition -= rotateServoSpeed;
             }
 
-            if (driver1.isDown(GamepadKeys.Button.RIGHT_BUMPER) && rotateServoPosition <=1){
-                rotateServoPosition += rotateServoSpeed;
+            if (driver1.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER) && rotateState > 0){ // && rotateServoPosition <=1
+                rotateState -= 1;
+                //rotateServoPosition += rotateServoSpeed;
             }
+
+
 
             if (driver1.wasJustPressed(GamepadKeys.Button.X) && !isExtend){
                 isExtend = true;
@@ -348,6 +361,23 @@ public class TamosTeleop extends LinearOpMode {
             }
 
             // Intake Binds logic --------------------------------------------------------------------------------
+
+            if (rotateState == 1){
+                rotateServoPosition = IntakeRotatePos1;
+            }
+            if (rotateState == 2){
+                rotateServoPosition = IntakeRotatePos2;
+            }
+            if (rotateState == 3){
+                rotateServoPosition = IntakeRotatePos3;
+            }
+            if (rotateState == 4){
+                rotateServoPosition = IntakeRotatePos4;
+            }
+            if (rotateState == 5){
+                rotateServoPosition = IntakeRotatePos5;
+            }
+
             IntakeRotationServo.setPosition(rotateServoPosition);
 
             if (isClawing){
