@@ -7,13 +7,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 public class LConstants {
     static {
-        PinpointConstants.forwardY = 5.90551;
-        PinpointConstants.strafeX = -3.74;
-        PinpointConstants.distanceUnit = DistanceUnit.INCH;
+        PinpointConstants.forwardY = 12;
+        PinpointConstants.strafeX = -16;
+        PinpointConstants.distanceUnit = DistanceUnit.CM;
         PinpointConstants.hardwareMapName = "pinpoint";
         PinpointConstants.encoderResolution = GoBildaPinpointDriver.GoBildaOdometryPods.goBILDA_SWINGARM_POD;
         PinpointConstants.forwardEncoderDirection = GoBildaPinpointDriver.EncoderDirection.REVERSED;
         PinpointConstants.strafeEncoderDirection = GoBildaPinpointDriver.EncoderDirection.REVERSED;
+
     }
 }
 
