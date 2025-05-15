@@ -35,8 +35,8 @@ public class TamosTeleop extends LinearOpMode {
 
 
     private boolean isClawing = false;
-    private double rotateServoPosition = 0;
-    public static double rotateServoSpeed = 0.1;
+    public static double rotateServoPosition = 0;
+    public static double rotateServoSpeed = 0.05;
     private boolean isTook = false;
 
 
@@ -282,11 +282,12 @@ public class TamosTeleop extends LinearOpMode {
                 isTook = !isTook;
                 Intake.setPosition(IntakeClawOpen);
             }
-            if (driver1.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER) && rotateServoPosition > 0){    //turn right
+
+            if (driver1.isDown(GamepadKeys.Button.RIGHT_BUMPER) && rotateServoPosition > 0){    //turn right
                 rotateServoPosition -= rotateServoSpeed;
             }
 
-            else if (driver1.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER) && rotateServoPosition <=1){
+            if (driver1.isDown(GamepadKeys.Button.LEFT_BUMPER) && rotateServoPosition <=1){
                 rotateServoPosition += rotateServoSpeed;
             }
 
@@ -381,6 +382,7 @@ public class TamosTeleop extends LinearOpMode {
             telemetry.addData("Rfront",Rfront.getVeloCoefficients());
             telemetry.addData("Lback",Lback.getVeloCoefficients());
             telemetry.addData("Rback",Rback.getVeloCoefficients());
+            telemetry.addData("RotateServPos",rotateServoPosition);
             telemetry.update();
 
             driver1.readButtons();
