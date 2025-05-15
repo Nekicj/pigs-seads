@@ -157,6 +157,13 @@ public class TamosTeleop extends LinearOpMode {
         Rfront.setInverted(true);
 
 
+
+
+        Lfront.setRunMode(Motor.RunMode.VelocityControl);
+        Rfront.setRunMode(Motor.RunMode.VelocityControl);
+        Lback.setRunMode(Motor.RunMode.VelocityControl);
+        Rback.setRunMode(Motor.RunMode.VelocityControl);
+
         double kP = 0.05;
         double kI = 0.005;
         double kD = 0.001;
@@ -417,6 +424,7 @@ public class TamosTeleop extends LinearOpMode {
             telemetry.addData("Lback",Lback.getVeloCoefficients());
             telemetry.addData("Rback",Rback.getVeloCoefficients());
             telemetry.addData("RotateServPos",rotateServoPosition);
+            telemetry.addData("rotateState",rotateState);
             telemetry.update();
 
             driver1.readButtons();
