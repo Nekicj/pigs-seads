@@ -16,7 +16,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import auto.constants.FConstants;
 import auto.constants.LConstants;
 
-@Autonomous(name = "BasketAuto", group = "Examples")
+@Autonomous(name = "SpecimenAutoBest", group = "Autobotz")
 public class trivialAutoSpecimen extends OpMode {
 
     private Follower follower;
