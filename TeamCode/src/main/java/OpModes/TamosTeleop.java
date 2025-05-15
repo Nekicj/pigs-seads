@@ -22,11 +22,11 @@ public class TamosTeleop extends LinearOpMode {
 
     public static double IntakeTargetPosition = 0;
 
-    public static double IntakeDownPosition = 0.45;
-    public static double IntakeUpPosition = 0.7;
+    public static double IntakeDownPosition = 0.8;
+    public static double IntakeUpPosition = 0.9;
 
-    public static double IntakeClawClose = 0.23;
-    public static double IntakeClawOpen = 0.37;
+    public static double IntakeClawClose = 0.4;
+    public static double IntakeClawOpen = 0.6;
 
     public static double IntakeRightPosition = 0.7;
     public static double IntakeNormalPosition = 0;
@@ -51,8 +51,8 @@ public class TamosTeleop extends LinearOpMode {
     public static double clawOpen = 0.8;
     public static double clawClose = 1;
 
-    public static double armTakeSamplePose = 0;
-    public static double armBringSamplePose = 0.9;
+    public static double armTakeSamplePose = 0.07;
+    public static double armBringSamplePose = 0.83;
     public static double servoPos = 0;
 
     // Base Motors ---------------------------
@@ -294,7 +294,9 @@ public class TamosTeleop extends LinearOpMode {
             if (driver1.wasJustPressed(GamepadKeys.Button.X) && !isExtend){
                 isExtend = true;
                 isExtendState = 0;
+                IntakeDownServo.setPosition(IntakeUpPosition);
             }
+
 
 
 
@@ -335,6 +337,7 @@ public class TamosTeleop extends LinearOpMode {
                     case 1:
                         if (driver1.wasJustPressed(GamepadKeys.Button.X)){
                             extendoTargetPosition = 0;
+                            IntakeDownServo.setPosition(1);
                             isExtend = false;
                             isExtendState = 0;
                             rotateServoPosition = 0;
