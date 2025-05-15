@@ -284,11 +284,11 @@ public class TamosTeleop extends LinearOpMode {
                 Intake.setPosition(IntakeClawOpen);
             }
 
-            if (driver1.isDown(GamepadKeys.Button.RIGHT_BUMPER) && rotateServoPosition > 0){    //turn right
+            if (driver1.isDown(GamepadKeys.Button.LEFT_BUMPER) && rotateServoPosition > 0){    //turn right
                 rotateServoPosition -= rotateServoSpeed;
             }
 
-            if (driver1.isDown(GamepadKeys.Button.LEFT_BUMPER) && rotateServoPosition <=1){
+            if (driver1.isDown(GamepadKeys.Button.RIGHT_BUMPER) && rotateServoPosition <=1){
                 rotateServoPosition += rotateServoSpeed;
             }
 
