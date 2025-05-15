@@ -23,7 +23,7 @@ public class TamosTeleop extends LinearOpMode {
     public static double IntakeTargetPosition = 0;
 
     public static double IntakeDownPosition = 0.8;
-    public static double IntakeUpPosition = 0.9;
+    public static double IntakeUpPosition = 0.93;
 
     public static double IntakeClawClose = 0.4;
     public static double IntakeClawOpen = 0.6;
@@ -193,7 +193,8 @@ public class TamosTeleop extends LinearOpMode {
         odo.resetPosAndIMU();
 
 
-        IntakeDownServo.setPosition(0.9);
+        IntakeDownServo.setPosition(1);
+        Intake.setPosition(IntakeClawOpen);
 
         waitForStart();
 
