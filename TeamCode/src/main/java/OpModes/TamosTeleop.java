@@ -33,9 +33,9 @@ public class TamosTeleop extends LinearOpMode {
 
 
     public static double IntakeRotatePos1 = 0;
-    public static double IntakeRotatePos2 = 0.25;
-    public static double IntakeRotatePos3 = 0.5;
-    public static double IntakeRotatePos4 = 0.75;
+    public static double IntakeRotatePos2 = 0.4;
+    public static double IntakeRotatePos3 = 0.6;
+    public static double IntakeRotatePos4 = 0.8;
     public static double IntakeRotatePos5 = 1;
 
 
@@ -300,12 +300,12 @@ public class TamosTeleop extends LinearOpMode {
                 Intake.setPosition(IntakeClawOpen);
             }
 
-            if (driver1.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER) && rotateState < 6){    //turn right && rotateServoPosition > 0
+            if (driver1.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER) && rotateState < 5){    //turn right && rotateServoPosition > 0
                 rotateState += 1;
                 //rotateServoPosition -= rotateServoSpeed;
             }
 
-            if (driver1.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER) && rotateState > 0){ // && rotateServoPosition <=1
+            if (driver1.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER) && rotateState > 1){ // && rotateServoPosition <=1
                 rotateState -= 1;
                 //rotateServoPosition += rotateServoSpeed;
             }
