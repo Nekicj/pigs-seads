@@ -38,6 +38,8 @@ public class TamosTeleop extends LinearOpMode {
     public static double IntakeRotatePos4 = 0.8;
     public static double IntakeRotatePos5 = 1;
 
+    public static double IntakeNotExtendPosition = 1;
+
 
 
 
@@ -209,7 +211,7 @@ public class TamosTeleop extends LinearOpMode {
         odo.resetPosAndIMU();
 
 
-        IntakeDownServo.setPosition(1);
+        IntakeDownServo.setPosition(IntakeNotExtendPosition);
         Intake.setPosition(IntakeClawOpen);
 
         waitForStart();
@@ -329,6 +331,10 @@ public class TamosTeleop extends LinearOpMode {
                 isOuttakeOpen = !isOuttakeOpen;
             }
 
+            if (driver1.wasJustPressed(GamepadKeys.Button.DPAD_DOWN)){
+                isOuttakeOpen = !isOuttakeOpen;
+            }
+
 
 
             // Outtake logics -----------------------------------------------------------------------
@@ -343,6 +349,15 @@ public class TamosTeleop extends LinearOpMode {
                 IntakeTargetPosition = armTakeSamplePose;
             }
             if (driver2.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)){
+                liftTargetPosition = liftBringSamplePose;
+                IntakeTargetPosition = armBringSamplePose;
+            }
+
+            if (driver1.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)){
+                liftTargetPosition = liftTakeSamplePose;
+                IntakeTargetPosition = armTakeSamplePose;
+            }
+            if (driver1.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)){
                 liftTargetPosition = liftBringSamplePose;
                 IntakeTargetPosition = armBringSamplePose;
             }
@@ -362,7 +377,7 @@ public class TamosTeleop extends LinearOpMode {
                     case 1:
                         if (driver1.wasJustPressed(GamepadKeys.Button.X)){
                             extendoTargetPosition = 0;
-                            IntakeDownServo.setPosition(1);
+                            IntakeDownServo.setPosition(IntakeNotExtendPosition);
                             isExtend = false;
                             isExtendState = 0;
                             rotateServoPosition = 0;
