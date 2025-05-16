@@ -14,6 +14,8 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import Controllers.Outtake.DaddyController;
+
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -27,16 +29,26 @@ public class trivialAutoSpecimen extends OpMode {
     private Follower follower;
     private DaddyController OutController;
     private Timer pathTimer, opmodeTimer;
+    private DelayedPoseAction takeAtSpec1 = new DelayedPoseAction();
+    private DelayedPoseAction takeAtSpace6 = new DelayedPoseAction();
+    private DelayedPoseAction takeAtSpace7 = new DelayedPoseAction();
     private int pathState;
     private ElapsedTime stageTimer = new ElapsedTime();
     private int stage4 = 0;
+
+    private ElapsedTime stageTimer5 = new ElapsedTime();
+    private int stage5 = 0;
+
+    private ElapsedTime stageTimer6 = new ElapsedTime();
+    private int stage6 = 0;
     private boolean opened = false;
     private boolean hasTakenAtSpec1 = false;
-
+    private Servo IntakeDownServo = null;
     private DelayedAction clawCloseAndGo = new DelayedAction();
     private DelayedAction clawCloseAndGo4 = new DelayedAction();
     private DelayedAction clawCloseAndGo5 = new DelayedAction();
     private DelayedAction clawCloseAndGo6 = new DelayedAction();
+
 
     ElapsedTime actionTimer = new ElapsedTime();
 
@@ -51,9 +63,9 @@ public class trivialAutoSpecimen extends OpMode {
     private final Pose CPto3 = new Pose(47.4, 23.8);
     private final Pose toHP2 = new Pose(21.2, 8.2, 0);
     private final Pose CPtoSpace = new Pose(19.8, 59.6);
-    private final Pose toSpace = new Pose(36.6, 72.2, 0);
+    private final Pose toSpace = new Pose(36.9, 72.2, 0);
 
-    private final Pose PickPos = new Pose(9.1, 31.27, 0);
+    private final Pose PickPos = new Pose(8.8, 31.27, 0);
     private final Pose Spec2 = new Pose(7.8+12.91206598205746, 56.06+39.76907356578898, 0.022974112383540985);
 
     private Path Score, Park;
@@ -85,6 +97,36 @@ public class trivialAutoSpecimen extends OpMode {
 
         public boolean isFinished() {
             return finished;
+        }
+    }
+
+    public class DelayedPoseAction {
+        private boolean started = false;
+        private boolean done = false;
+        private ElapsedTime timer = new ElapsedTime();
+
+        public void run(Pose currentPose, Pose targetPose, double tolerance, double delaySeconds, Runnable action) {
+            if (done) return;
+
+            double dx = Math.abs(currentPose.getX() - targetPose.getX());
+            double dy = Math.abs(currentPose.getY() - targetPose.getY());
+
+            if (dx <= tolerance && dy <= tolerance) {
+                if (!started) {
+                    timer.reset();
+                    started = true;
+                }
+
+                if (timer.seconds() >= delaySeconds) {
+                    action.run();
+                    done = true;
+                }
+            }
+        }
+
+        public void reset() {
+            started = false;
+            done = false;
         }
     }
 
@@ -168,42 +210,72 @@ public class trivialAutoSpecimen extends OpMode {
                 break;
             case 4:
                 if (!follower.isBusy()) {
-                    clawCloseAndGo4.run(0.6, () -> {
-                        OutController.ClClaw();
-                        follower.setMaxPower(0.67);
-                        OutController.OuttakeClip();
-                        follower.followPath(Clip2, true);
+                    if (stage4 == 0) {
+                        stageTimer.reset();   // запускаем таймер
+                        stage4 = 1;
+                    }
+
+                    if (stage4 == 1 && stageTimer.seconds() >= 0.3) {
+                        OutController.ClClaw();  // ✅ закрываем клещи через 0.3 сек
+                        stage4 = 2;
+                        stageTimer.reset();     // перезапускаем таймер для следующего действия
+                    }
+
+                    if (stage4 == 2 && stageTimer.seconds() >= 0.3) {
+                        follower.setMaxPower(0.7);
+                        OutController.OuttakeClip();       // ✅ поднимаем лифт
+                        follower.followPath(Clip2, true);  // ✅ едем
                         hasTakenAtSpec1 = false;
                         setPathState(5);
-                        clawCloseAndGo4.reset();
-                    });
+                        stage4 = 0;                         // сброс для повторного использования
+                    }
                 }
                 break;
 
             case 5:
                 if (!follower.isBusy()) {
-                    clawCloseAndGo5.run(0.6, () -> {
-                        OutController.ClClaw();
-                        follower.setMaxPower(0.67);
+                    if (stage5 == 0) {
+                        stageTimer5.reset();
+                        stage5 = 1;
+                    }
+
+                    if (stage5 == 1 && stageTimer5.seconds() >= 0.3) {
+                        OutController.ClClaw();   // закрыть клещи через 0.3 сек
+                        stage5 = 2;
+                        stageTimer5.reset();
+                    }
+
+                    if (stage5 == 2 && stageTimer5.seconds() >= 0.3) {
+                        follower.setMaxPower(0.7);
                         OutController.OuttakeClip();
                         follower.followPath(Clip3, true);
                         hasTakenAtSpec1 = false;
                         setPathState(6);
-                        clawCloseAndGo5.reset();
-                    });
+                        stage5 = 0; // сброс
+                    }
                 }
                 break;
             case 6:
                 if (!follower.isBusy()) {
-                    clawCloseAndGo6.run(0.6, () -> {
+                    if (stage6 == 0) {
+                        stageTimer6.reset();
+                        stage6 = 1;
+                    }
+
+                    if (stage6 == 1 && stageTimer6.seconds() >= 0.3) {
                         OutController.ClClaw();
-                        follower.setMaxPower(0.67);
+                        stage6 = 2;
+                        stageTimer6.reset();
+                    }
+
+                    if (stage6 == 2 && stageTimer6.seconds() >= 0.3) {
+                        follower.setMaxPower(0.7);
                         OutController.OuttakeClip();
                         follower.followPath(Clip4, true);
                         hasTakenAtSpec1 = false;
                         setPathState(7);
-                        clawCloseAndGo6.reset();
-                    });
+                        stage6 = 0;
+                    }
                 }
                 break;
 //            case 6:
@@ -227,27 +299,46 @@ public class trivialAutoSpecimen extends OpMode {
 
         follower.update();
         autonomousPathUpdate();
+        Pose pose = follower.getPose();
+
+//        if (pathState == 5) {
+//            takeAtSpec1.run(pose, Spec1, 2.0, 1.0, () -> {
+//                OutController.OuttakeTake();
+//            });
+//        }
+//
+//        if (pathState == 6) {
+//            takeAtSpace6.run(pose, toSpace, 2.0, 1.0, () -> {
+//                OutController.OuttakeTake();
+//            });
+//        }
+//
+//        if (pathState == 7) {
+//            takeAtSpace7.run(pose, toSpace, 2.0, 1.0, () -> {
+//                OutController.OuttakeTake();
+//            });
+//        }
 
         if (!hasTakenAtSpec1 && pathState == 5) {
             Pose currentPose = follower.getPose();
-            if (Math.abs(currentPose.getX() - Spec1.getX()) < 2.0 &&
-                    Math.abs(currentPose.getY() - Spec1.getY()) < 2.0) {
+            if (Math.abs(currentPose.getX() - Spec1.getX()) < 1 &&
+                    Math.abs(currentPose.getY() - Spec1.getY()) < 1) {
                 OutController.OuttakeTake();
                 hasTakenAtSpec1 = true;
             }
         }
         if (!hasTakenAtSpec1 && pathState == 6) {
             Pose currentPose = follower.getPose();
-            if (Math.abs(currentPose.getX() - toSpace.getX()) < 2.0 &&
-                    Math.abs(currentPose.getY() - toSpace.getY()) < 2.0) {
+            if (Math.abs(currentPose.getX() - toSpace.getX()) < 1 &&
+                    Math.abs(currentPose.getY() - toSpace.getY()) < 1) {
                 OutController.OuttakeTake();
                 hasTakenAtSpec1 = true;
             }
         }
         if (!hasTakenAtSpec1 && pathState == 7) {
             Pose currentPose = follower.getPose();
-            if (Math.abs(currentPose.getX() - toSpace.getX()) < 2.0 &&
-                    Math.abs(currentPose.getY() - toSpace.getY()) < 2.0) {
+            if (Math.abs(currentPose.getX() - toSpace.getX()) < 1 &&
+                    Math.abs(currentPose.getY() - toSpace.getY()) < 1) {
                 OutController.OuttakeTake();
                 hasTakenAtSpec1 = true;
             }
@@ -270,6 +361,9 @@ public class trivialAutoSpecimen extends OpMode {
         pathTimer = new Timer();
         opmodeTimer = new Timer();
         opmodeTimer.resetTimer();
+        IntakeDownServo = hardwareMap.get(Servo.class,"inTakeArm");
+        IntakeDownServo.setPosition(1);
+
 
 
 
