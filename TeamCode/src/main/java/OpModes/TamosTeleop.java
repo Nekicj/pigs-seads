@@ -290,6 +290,10 @@ public class TamosTeleop extends LinearOpMode {
             }
 
             //Binds --------------------------------------------------------------------------------
+            if (driver1.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
+                odo.recalibrateIMU();
+                odo.resetPosAndIMU();
+            }
 
             if (driver1.wasJustPressed(GamepadKeys.Button.A) && !isClawing && isClawingState == 0 && !isTook){     //bring sample
                 isClawing = !isClawing;
