@@ -366,7 +366,6 @@ public class trivialAutoSpecimen extends OpMode {
 
 
 
-
         Constants.setConstants(FConstants.class, LConstants.class);
         follower = new Follower(hardwareMap);
         follower.setStartingPose(startPose);

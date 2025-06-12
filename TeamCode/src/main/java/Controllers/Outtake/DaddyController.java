@@ -84,6 +84,9 @@ public class DaddyController {
     public void ClClaw() {
         Outtake.setPosition(clawClose);
     }
+    public void OpClaw() {
+        Outtake.setPosition(clawOpen);
+    }
 
     public void updateScriptedActions() {
         double elapsedTime = elapsedTimer.milliseconds() / 1000.0;
