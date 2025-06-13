@@ -55,7 +55,7 @@ public class BasketAutoSnake extends OpMode {
 
     ElapsedTime actionTimer = new ElapsedTime();
 
-    private final Pose startPose = new Pose(7.8, 56.06, Math.toRadians(0));  // Starting position
+    private final Pose startPose = new Pose(9.15, 104.26, Math.toRadians(0));  // Starting position
     private final Pose Backet = new Pose(15.85, 126.8, -45);
     private final Pose Pick1 = new Pose(23.4, 120.33,0);
     private final Pose Pick2 = new Pose(23.4, 130.6, 0);
