@@ -160,6 +160,8 @@ public class AlohaTeleop extends LinearOpMode {
                 actionsController.setTransferNBusket();
                 extendLenght = 0;
 
+            }else if(driver2.wasJustPressed(GamepadKeys.Button.A)){
+                actionsController.setLiftToTransfer();
             }
 
             if (gamepad1.left_trigger > 0 && isExtended && extendLenght > 0){
