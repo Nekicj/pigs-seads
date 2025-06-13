@@ -156,12 +156,11 @@ public class ActionsController {
         transferSchedule.scheduleDelay(TRANSFER_TO_TAKE_SAMPLE);
         transferSchedule.scheduleCommand(outtakeController::setOuttakeToBasket);
 
+        transferSchedule.scheduleCommand(outtakeController::setOuttakeToBasket);
         transferSchedule.scheduleCommand(()->liftController.setTargetPosition(LiftController.Position.MAX.getPos()));
 
-        transferSchedule.scheduleDelay(TRANSFER_TO_ROTATE_CLAW);
-        transferSchedule.scheduleCommand(outtakeController::setOuttakeToBasket);
 
-        transferSchedule.scheduleCommand(outtakeController::setOuttakeToBasket);
+
 
         transferSchedule.start();
     }
@@ -221,6 +220,8 @@ public class ActionsController {
     public void clawRotate(boolean up){
         intakeController.rotateClaw(up);
     }
-
+    public void setRotateClaw(double rotate){
+        intakeController.setRotateClaw(4);
+    }
 
 }

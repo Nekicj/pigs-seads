@@ -139,7 +139,9 @@ public class AlohaTeleop extends LinearOpMode {
 
                 }else{
                     isExtended = false;
+                    actionsController.setRotateClaw(4);
                     actionsController.setIntakeToStandard();
+
                     extendLenght = 0;
                 }
             }else if (driver1.wasJustPressed(GamepadKeys.Button.A) && isExtended){

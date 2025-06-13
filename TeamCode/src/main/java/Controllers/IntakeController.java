@@ -102,6 +102,10 @@ public class IntakeController {
         intakeRotate.setPosition(intakeRotatePos);
     }
 
+    public void setRotateClaw(double rotate){
+        clawRotateCounter = rotate;
+        updateRotateClaw();
+    }
     public void rotateClaw(boolean up){
         if (up && clawRotateCounter > 1){
             clawRotateCounter -= 1;
@@ -109,6 +113,9 @@ public class IntakeController {
             clawRotateCounter +=1;
         }
 
+        updateRotateClaw();
+    }
+    public void updateRotateClaw(){
         if (clawRotateCounter == 1){
             clawRotate.setPosition(Servos.INTAKE_CLAW_ROTATE_1.getPos());
         }else if(clawRotateCounter == 2){
@@ -126,6 +133,7 @@ public class IntakeController {
         else if(clawRotateCounter == 7){
             clawRotate.setPosition(Servos.INTAKE_CLAW_ROTATE_7.getPos());
         }
+
     }
 
     public void setIntakeClawPosition(double position){
