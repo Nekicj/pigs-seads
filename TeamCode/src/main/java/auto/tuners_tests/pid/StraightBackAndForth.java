@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.pedropathing.util.Constants;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import Controllers.ActionsController;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import com.pedropathing.follower.Follower;
@@ -13,6 +14,7 @@ import com.pedropathing.pathgen.BezierLine;
 import com.pedropathing.pathgen.Path;
 import com.pedropathing.pathgen.Point;
 
+import Controllers.ActionsController;
 import auto.constants.FConstants;
 import auto.constants.LConstants;
 
@@ -39,6 +41,7 @@ public class StraightBackAndForth extends OpMode {
     private boolean forward = true;
 
     private Follower follower;
+    private ActionsController actionsController;
 
     private Path forwards;
     private Path backwards;
@@ -64,6 +67,8 @@ public class StraightBackAndForth extends OpMode {
                             + " inches forward. The robot will go forward and backward continuously"
                             + " along the path. Make sure you have enough room.");
         telemetryA.update();
+        actionsController = new ActionsController(hardwareMap);
+        actionsController.setExtendTarget(0);
     }
 
     /**
