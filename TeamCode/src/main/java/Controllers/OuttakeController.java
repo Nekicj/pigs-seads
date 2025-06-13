@@ -11,9 +11,13 @@ public class OuttakeController {
     private Servo armLeft = null;
     private Servo armRight = null;
 
+    public static double outtake_push_basket = 0.65;
+
     public static enum Servos{
         OUTTAKE_TAKE_SPECIMEN(0.92),
         OUTTAKE_PUSH_SPECIMEN(0.22),
+
+        OUTTAKE_PUSH_BASKET(outtake_push_basket),
 
         CLAW_OPEN(0.3),
         CLAW_CLOSE(0.6),
@@ -83,6 +87,13 @@ public class OuttakeController {
         armLeft.setPosition(Servos.OUTTAKE_PUSH_SPECIMEN.getPos());
         armRight.setPosition(Servos.OUTTAKE_PUSH_SPECIMEN.getPos());
         clawRotate.setPosition(Servos.CLAW_ROTATE_TRANSFER.getPos());
+    }
+
+    public void setOuttakeToBasket(){
+        armLeft.setPosition(Servos.OUTTAKE_PUSH_BASKET.getPos());
+        armRight.setPosition(Servos.OUTTAKE_PUSH_BASKET.getPos());
+
+        clawRotate.setPosition(Servos.CLAW_ROTATE_PUSH_SPECIMEN.getPos());
     }
 
 

@@ -132,6 +132,10 @@ public class IntakeController {
         intakeClaw.setPosition(position);
     }
 
+    public void setClawRotatePosition(double position){
+        clawRotate.setPosition(position);
+    }
+
 
     public double getIntakeRotatePos(){return intakeRotatePos;}
     public void setIntakeRotatePos(double position){intakeRotate.setPosition(position);}
