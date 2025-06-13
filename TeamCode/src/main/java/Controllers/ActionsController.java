@@ -147,9 +147,6 @@ public class ActionsController {
         transferSchedule.scheduleCommand(outtakeController::setClawOpen);
         transferSchedule.scheduleCommand(() -> liftController.setTargetPosition(0));
 
-        transferSchedule.scheduleDelay(TRANSFER_TO_TRANS);
-        transferSchedule.scheduleCommand(intakeController::setClawOpen);
-
         transferSchedule.scheduleCommand(intakeController::setClawOpen);
         transferSchedule.scheduleCommand(outtakeController::setClawClose);
 

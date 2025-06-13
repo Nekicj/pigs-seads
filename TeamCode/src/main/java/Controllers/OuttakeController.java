@@ -20,7 +20,7 @@ public class OuttakeController {
         OUTTAKE_PUSH_BASKET(outtake_push_basket),
 
         CLAW_OPEN(0.3),
-        CLAW_CLOSE(0.6),
+        CLAW_CLOSE(0.75),
 
         CLAW_ROTATE_TAKE_SPECIMEN(0.95),
         CLAW_ROTATE_PUSH_SPECIMEN(0.8),
