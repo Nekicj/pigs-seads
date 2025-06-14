@@ -59,19 +59,7 @@ public class AlohaTeleop extends LinearOpMode {
         Lback.setRunMode(Motor.RunMode.VelocityControl);
         Rback.setRunMode(Motor.RunMode.VelocityControl);
 
-        Lfront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-        Rfront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-        Lback.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-        Rback.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
 
-        double kP = 0.05;
-        double kI = 0.005;
-        double kD = 0.001;
-
-        Lfront.setVeloCoefficients(kP, kI, kD);
-        Rfront.setVeloCoefficients(kP, kI, kD);
-        Lback .setVeloCoefficients(kP, kI, kD);
-        Rback .setVeloCoefficients(kP, kI, kD);
 
         MecanumDrive drive = new MecanumDrive(
                 Lfront,
