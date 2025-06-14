@@ -76,6 +76,7 @@ public class ActionsController {
         outtakeScheduler.scheduleCommand(()->  liftController.setTargetPosition(LiftController.Position.SPECIMEN_TAKE.getPos()));
         outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToTake);
         outtakeScheduler.scheduleCommand(outtakeController::setClawRotateToTake);
+        outtakeScheduler.scheduleCommand(outtakeController::setClawOpen);
 
         outtakeScheduler.start();
 
@@ -90,6 +91,26 @@ public class ActionsController {
         outtakeScheduler.scheduleCommand(() -> liftController.setTargetPosition(LiftController.Position.SPECIMEN_PUSH.getPos()));
         outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToPush);
         outtakeScheduler.scheduleCommand(outtakeController::setClawRotateToPush);
+
+        outtakeScheduler.start();
+    }
+
+    public void setLiftTarget(double target){
+        liftController.setTargetPosition(target);
+    }
+
+    public void setClawOpenNToTakeSpecimen(){
+        outtakeScheduler.clearQueue();
+        outtakeScheduler.setAutoReset(false);
+
+        outtakeScheduler.scheduleCommand(outtakeController::setClawOpen);
+
+        outtakeScheduler.scheduleDelay(0.7);
+        outtakeScheduler.scheduleCommand(outtakeController::setClawOpen);
+
+        outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToTake);
+        outtakeScheduler.scheduleCommand(outtakeController::setClawRotateToTake);
+        outtakeScheduler.scheduleCommand(()->liftController.setTargetPosition(LiftController.Position.SPECIMEN_TAKE.getPos()));
 
         outtakeScheduler.start();
     }
@@ -146,9 +167,12 @@ public class ActionsController {
         transferSchedule.scheduleCommand(outtakeController::setOuttakeToTransfer);
         transferSchedule.scheduleCommand(outtakeController::setClawOpen);
         transferSchedule.scheduleCommand(() -> liftController.setTargetPosition(0));
+        transferSchedule.scheduleCommand(outtakeController::setClawClose);
+
+        transferSchedule.scheduleDelay(0.6);
+        transferSchedule.scheduleCommand(intakeController::setClawOpen);
 
         transferSchedule.scheduleCommand(intakeController::setClawOpen);
-        transferSchedule.scheduleCommand(outtakeController::setClawClose);
 
         transferSchedule.scheduleDelay(TRANSFER_TO_TAKE_SAMPLE);
         transferSchedule.scheduleCommand(outtakeController::setOuttakeToBasket);
@@ -182,6 +206,21 @@ public class ActionsController {
 
 
     }
+    public void setOuttakeToBasket(){
+        outtakeScheduler.clearQueue();
+        outtakeScheduler.setAutoReset(false);
+
+        outtakeScheduler.scheduleCommand(() -> liftController.setTargetPosition(LiftController.Position.MAX.getPos()));
+        outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToBasket);
+
+        outtakeScheduler.scheduleDelay(2);
+        outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToBasket);
+
+        outtakeScheduler.scheduleCommand(outtakeController::setClawOpen);
+
+        outtakeScheduler.start();
+    }
+
 
     public void setClaws(boolean isIntakeOpen){
         if(isIntakeOpen){

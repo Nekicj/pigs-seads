@@ -11,6 +11,8 @@ public class OuttakeController {
     private Servo armLeft = null;
     private Servo armRight = null;
 
+    public static double CLAW_OPEN_V = 1;
+    public static double CLAW_CLOSE_V = 0;
     public static double outtake_push_basket = 0.65;
 
     public static enum Servos{
@@ -19,8 +21,8 @@ public class OuttakeController {
 
         OUTTAKE_PUSH_BASKET(outtake_push_basket),
 
-        CLAW_OPEN(0.3),
-        CLAW_CLOSE(0.75),
+        CLAW_OPEN(CLAW_OPEN_V),
+        CLAW_CLOSE(CLAW_CLOSE_V),
 
         CLAW_ROTATE_TAKE_SPECIMEN(0.95),
         CLAW_ROTATE_PUSH_SPECIMEN(0.8),

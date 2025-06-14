@@ -29,6 +29,7 @@ import auto.constants.LConstants;
 public class BasketAutoSnake extends OpMode {
 
     private Follower follower;
+    private ElapsedTime stateTimer = new ElapsedTime();
     private OuttakeController outtakeController;
     private ActionsController actionsController;
     private Timer pathTimer, opmodeTimer;
@@ -55,8 +56,8 @@ public class BasketAutoSnake extends OpMode {
 
     ElapsedTime actionTimer = new ElapsedTime();
 
-    private final Pose startPose = new Pose(9.15, 104.26, Math.toRadians(0));  // Starting position
-    private final Pose Backet = new Pose(15.85, 126.8, -45);
+    private final Pose startPose = new Pose(9.24, 96.40, Math.toRadians(0));  // Starting position
+    private final Pose Backet = new Pose(12.7, 130.8, -45);
     private final Pose Pick1 = new Pose(23.4, 120.33,0);
     private final Pose Pick2 = new Pose(23.4, 130.6, 0);
     private final Pose Pick3 = new Pose(23.4, 130.6, 25);
@@ -171,11 +172,15 @@ public class BasketAutoSnake extends OpMode {
         switch (pathState) {
             case 0:
                 follower.followPath(Score);
+                follower.setMaxPower(0.8);
+                actionsController.setOuttakeToBasket();
+                stateTimer.reset();
                 setPathState(1);
                 break;
+
             case 1:
-                if(!follower.isBusy()) {
-                    follower.followPath(Take1,true);
+                if (!follower.isBusy() && stateTimer.seconds() >= 1.5) {
+                    follower.followPath(Take1, true);
                     setPathState(2);
                 }
                 break;
@@ -237,6 +242,7 @@ public class BasketAutoSnake extends OpMode {
         follower.update();
         autonomousPathUpdate();
         Pose pose = follower.getPose();
+        actionsController.update();
 
 //        if (pathState == 5) {
 //            takeAtSpec1.run(pose, Spec1, 2.0, 1.0, () -> {
@@ -275,6 +281,7 @@ public class BasketAutoSnake extends OpMode {
         opmodeTimer = new Timer();
         opmodeTimer.resetTimer();
         actionsController = new ActionsController(hardwareMap);
+        actionsController.setExtendTarget(0);
 
 
 

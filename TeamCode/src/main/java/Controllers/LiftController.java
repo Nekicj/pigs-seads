@@ -28,7 +28,7 @@ public class LiftController {
     public enum Position{
         HOME(0),
         SPECIMEN_TAKE(0),
-        SPECIMEN_PUSH(300),
+        SPECIMEN_PUSH(330),
         MAX(650);
 
         Position(int pos){
@@ -49,8 +49,8 @@ public class LiftController {
 
 
 
-    public void initialize(HardwareMap hardwareMap){
-        leftLift = new Motor(hardwareMap,"Llift");
+    public void initialize(HardwareMap hardwareMap) {
+        leftLift = new Motor(hardwareMap, "Llift");
         rightLift = new Motor(hardwareMap, "Rlift");
 
         leftLift.setInverted(false);

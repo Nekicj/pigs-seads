@@ -15,6 +15,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import Controllers.ActionsController;
+import Controllers.LiftController;
 import Controllers.OuttakeController;
 
 import com.qualcomm.robotcore.hardware.Servo;
@@ -55,20 +56,24 @@ public class bestAutoSnake extends OpMode {
 
     ElapsedTime actionTimer = new ElapsedTime();
 
-    private final Pose startPose = new Pose(7.8, 56.06, Math.toRadians(0));  // Starting position
-    private final Pose Spec1 = new Pose(36.6, 72, 0);
-    private final Pose CPto1 = new Pose(14.7, 34);
-    private final Pose Samp1 = new Pose(64, 26.1, 0);
-    private final Pose toHP = new Pose(22, 20.4, 0);
-    private final Pose Samp2 = new Pose(64, 13.7, 0);
-    private final Pose CPto2 = new Pose(50.1, 31.6);
-    private final Pose Samp3 = new Pose(62,7.2, 0);
-    private final Pose CPto3 = new Pose(47.4, 23.8);
-    private final Pose toHP2 = new Pose(21.2, 8.2, 0);
-    private final Pose CPtoSpace = new Pose(19.8, 59.6);
-    private final Pose toSpace = new Pose(36.9, 72.2, 0);
+    private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Starting position
+    private final Pose Spec1 = new Pose(37.5, 68.09, 0);
+    private final Pose CPto1 = new Pose(14.28, 38.8);
+    private final Pose Samp1 = new Pose(63.63, 28.57, 0);
 
-    private final Pose PickPos = new Pose(8.8, 31.27, 0);
+    private final Pose toHP = new Pose(21.2, 21.65, 0);
+    private final Pose Samp2 = new Pose(60.27, 14.95, 0);
+    private final Pose CPto2 = new Pose(58.7, 27.46);
+    private final Pose Samp3 = new Pose(57.15,7.59, 0);
+    private final Pose CPto3 = new Pose(57.15, 18.97);
+    private final Pose toHP2 = new Pose(19.2, 7.59, 0);
+    private final Pose CPtoSpace = new Pose(16.91, 60.7);
+    private final Pose toSpace = new Pose(38.75, 67.08, 0);
+    private final Pose pickyzone = new Pose(18, 33.7, 0);
+
+    private final Pose PickPos = new Pose(9.6, 33.7, 0);
+    private final Pose PickPos2 = new Pose(11.6, 33.7, 0);
+
     private final Pose Spec2 = new Pose(7.8+12.91206598205746, 56.06+39.76907356578898, 0.022974112383540985);
 
     private Path Score, Park;
@@ -155,26 +160,34 @@ public class bestAutoSnake extends OpMode {
                 .setLinearHeadingInterpolation(toHP.getHeading(), Samp3.getHeading())
                 .addPath(new BezierLine(new Point(Samp3), new Point(toHP2)))
                 .setLinearHeadingInterpolation(Samp3.getHeading(), toHP2.getHeading())
-                .addPath(new BezierLine(new Point(toHP2), new Point(PickPos)))
-                .setLinearHeadingInterpolation(toHP2.getHeading(), PickPos.getHeading())
+                .addPath(new BezierLine(new Point(toHP2), new Point(pickyzone)))
+                .setLinearHeadingInterpolation(toHP2.getHeading(), pickyzone.getHeading())
+                .addPath(new BezierLine(new Point(pickyzone), new Point(PickPos)))
+                .setLinearHeadingInterpolation(pickyzone.getHeading(), PickPos.getHeading())
                 .build();
         Clip2 = follower.pathBuilder()
                 .addPath(new BezierCurve(new Point(PickPos), new Point(CPtoSpace),new Point(toSpace)))
                 .setLinearHeadingInterpolation(PickPos.getHeading(), toSpace.getHeading())
-                .addPath(new BezierLine(new Point(toSpace), new Point(PickPos)))
-                .setLinearHeadingInterpolation(toSpace.getHeading(), PickPos.getHeading())
+                .addPath(new BezierLine(new Point(toSpace), new Point(pickyzone)))
+                .setLinearHeadingInterpolation(toSpace.getHeading(), pickyzone.getHeading())
+                .addPath(new BezierLine(new Point(pickyzone), new Point(PickPos2)))
+                .setLinearHeadingInterpolation(pickyzone.getHeading(), PickPos2.getHeading())
                 .build();
         Clip3 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(PickPos), new Point(CPtoSpace),new Point(toSpace)))
-                .setLinearHeadingInterpolation(PickPos.getHeading(), toSpace.getHeading())
-                .addPath(new BezierLine(new Point(toSpace), new Point(PickPos)))
-                .setLinearHeadingInterpolation(toSpace.getHeading(), PickPos.getHeading())
+                .addPath(new BezierCurve(new Point(PickPos2), new Point(CPtoSpace),new Point(toSpace)))
+                .setLinearHeadingInterpolation(PickPos2.getHeading(), toSpace.getHeading())
+                .addPath(new BezierLine(new Point(toSpace), new Point(pickyzone)))
+                .setLinearHeadingInterpolation(toSpace.getHeading(), pickyzone.getHeading())
+                .addPath(new BezierLine(new Point(pickyzone), new Point(PickPos2)))
+                .setLinearHeadingInterpolation(pickyzone.getHeading(), PickPos2.getHeading())
                 .build();
         Clip4 = follower.pathBuilder()
-                .addPath(new BezierCurve(new Point(PickPos), new Point(CPtoSpace),new Point(toSpace)))
-                .setLinearHeadingInterpolation(PickPos.getHeading(), toSpace.getHeading())
-                .addPath(new BezierLine(new Point(toSpace), new Point(PickPos)))
-                .setLinearHeadingInterpolation(toSpace.getHeading(), PickPos.getHeading())
+                .addPath(new BezierCurve(new Point(PickPos2), new Point(CPtoSpace),new Point(toSpace)))
+                .setLinearHeadingInterpolation(PickPos2.getHeading(), toSpace.getHeading())
+                .addPath(new BezierLine(new Point(toSpace), new Point(pickyzone)))
+                .setLinearHeadingInterpolation(toSpace.getHeading(), pickyzone.getHeading())
+                .addPath(new BezierLine(new Point(pickyzone), new Point(PickPos2)))
+                .setLinearHeadingInterpolation(pickyzone.getHeading(), PickPos2.getHeading())
                 .build();
 
     }
@@ -185,14 +198,12 @@ public class bestAutoSnake extends OpMode {
         switch (pathState) {
             case 0:
                 follower.followPath(Score);
-                follower.setMaxPower(0.6);
-                //OutController.OuttakeClip();
                 actionsController.toPushSpecimen();
+                //OutController.OuttakeClip();
                 setPathState(1);
                 break;
             case 1:
                 if(!follower.isBusy()) {
-                    follower.setMaxPower(1);
                     //OutController.OuttakeTake();
                     actionsController.toTakeSpecimen();
                     follower.followPath(Grab1,true);
@@ -202,13 +213,15 @@ public class bestAutoSnake extends OpMode {
             case 2:
                 if(!follower.isBusy()) {
                     follower.followPath(Grab2,true);
+                    follower.setMaxPower(0.8);
                     setPathState(3);
                 }
                 break;
             case 3:
                 if(!follower.isBusy()) {
-                    follower.setMaxPower(0.8);
                     follower.followPath(Grab3,true);
+                    actionsController.toTakeSpecimen();
+                    follower.setMaxPower(6);
                     setPathState(4);
 
                 }
@@ -220,16 +233,17 @@ public class bestAutoSnake extends OpMode {
                         stage4 = 1;
                     }
 
-                    if (stage4 == 1 && stageTimer.seconds() >= 0.3) {
+                    if (stage4 == 1 && stageTimer.seconds() >= 0.5) {
                         outtakeController.setClawClose();
                         stage4 = 2;
                         stageTimer.reset();
                     }
 
-                    if (stage4 == 2 && stageTimer.seconds() >= 0.3) {
-                        follower.setMaxPower(0.7);
-                        actionsController.toPushSpecimen();
+                    if (stage4 == 2 && stageTimer.seconds() >= 0.5) {
                         follower.followPath(Clip2, true);
+                        outtakeController.setOuttakeToPush();
+                        outtakeController.setClawRotateToPush();
+                        actionsController.setLiftTarget(LiftController.Position.SPECIMEN_PUSH.getPos());
                         hasTakenAtSpec1 = false;
                         setPathState(5);
                         stage4 = 0;
@@ -244,16 +258,17 @@ public class bestAutoSnake extends OpMode {
                         stage5 = 1;
                     }
 
-                    if (stage5 == 1 && stageTimer5.seconds() >= 0.3) {
+                    if (stage5 == 1 && stageTimer5.seconds() >= 0.5) {
                         outtakeController.setClawClose();
                         stage5 = 2;
                         stageTimer5.reset();
                     }
 
-                    if (stage5 == 2 && stageTimer5.seconds() >= 0.3) {
-                        follower.setMaxPower(0.7);
-                        actionsController.toPushSpecimen();
+                    if (stage5 == 2 && stageTimer5.seconds() >= 0.5) {
                         follower.followPath(Clip3, true);
+                        outtakeController.setOuttakeToPush();
+                        outtakeController.setClawRotateToPush();
+                        actionsController.setLiftTarget(LiftController.Position.SPECIMEN_PUSH.getPos());
                         hasTakenAtSpec1 = false;
                         setPathState(6);
                         stage5 = 0;
@@ -267,15 +282,16 @@ public class bestAutoSnake extends OpMode {
                         stage6 = 1;
                     }
 
-                    if (stage6 == 1 && stageTimer6.seconds() >= 0.3) {
+                    if (stage6 == 1 && stageTimer6.seconds() >= 0.5) {
                         outtakeController.setClawClose();
                         stage6 = 2;
                         stageTimer6.reset();
                     }
 
-                    if (stage6 == 2 && stageTimer6.seconds() >= 0.3) {
-                        follower.setMaxPower(0.7);
-                        actionsController.toPushSpecimen();
+                    if (stage6 == 2 && stageTimer6.seconds() >= 0.5) {
+                        outtakeController.setOuttakeToPush();
+                        outtakeController.setClawRotateToPush();
+                        actionsController.setLiftTarget(LiftController.Position.SPECIMEN_PUSH.getPos());
                         follower.followPath(Clip4, true);
                         hasTakenAtSpec1 = false;
                         setPathState(7);
@@ -305,6 +321,7 @@ public class bestAutoSnake extends OpMode {
         follower.update();
         autonomousPathUpdate();
         Pose pose = follower.getPose();
+        actionsController.update();
 
 //        if (pathState == 5) {
 //            takeAtSpec1.run(pose, Spec1, 2.0, 1.0, () -> {
@@ -326,24 +343,28 @@ public class bestAutoSnake extends OpMode {
 
         if (!hasTakenAtSpec1 && pathState == 5) {
             Pose currentPose = follower.getPose();
-            if (Math.abs(currentPose.getX() - Spec1.getX()) < 1 &&
-                    Math.abs(currentPose.getY() - Spec1.getY()) < 1) {
+            if (Math.abs(currentPose.getX() - toSpace.getX()) < 2 &&
+                    Math.abs(currentPose.getY() - toSpace.getY()) < 2) {
+                outtakeController.setClawOpen();
                 actionsController.toTakeSpecimen();
+
                 hasTakenAtSpec1 = true;
             }
         }
         if (!hasTakenAtSpec1 && pathState == 6) {
             Pose currentPose = follower.getPose();
-            if (Math.abs(currentPose.getX() - toSpace.getX()) < 1 &&
-                    Math.abs(currentPose.getY() - toSpace.getY()) < 1) {
+            if (Math.abs(currentPose.getX() - toSpace.getX()) < 2 &&
+                    Math.abs(currentPose.getY() - toSpace.getY()) < 2) {
+                outtakeController.setClawOpen();
                 actionsController.toTakeSpecimen();
                 hasTakenAtSpec1 = true;
             }
         }
         if (!hasTakenAtSpec1 && pathState == 7) {
             Pose currentPose = follower.getPose();
-            if (Math.abs(currentPose.getX() - toSpace.getX()) < 1 &&
-                    Math.abs(currentPose.getY() - toSpace.getY()) < 1) {
+            if (Math.abs(currentPose.getX() - toSpace.getX()) < 2 &&
+                    Math.abs(currentPose.getY() - toSpace.getY()) < 2) {
+                outtakeController.setClawOpen();
                 actionsController.toTakeSpecimen();
                 hasTakenAtSpec1 = true;
             }
@@ -362,10 +383,23 @@ public class bestAutoSnake extends OpMode {
 
     @Override
     public void init() {
+        outtakeController = new OuttakeController();
+
+        outtakeController.initialize(hardwareMap,
+                "OuttakeClaw",
+                "ClawRotate",
+                "OuttakeArmLeft",
+                "OuttakeArmRight",
+                false);
+
+
         pathTimer = new Timer();
         opmodeTimer = new Timer();
         opmodeTimer.resetTimer();
         actionsController = new ActionsController(hardwareMap);
+        actionsController.setExtendTarget(0);
+        actionsController.setLiftToTransfer();
+        outtakeController.setClawRotateToPush();
 
 
 
