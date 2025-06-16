@@ -18,7 +18,6 @@ public class BaseController {
 
     GoBildaPinpointDriver odo = null;
 
-    private GamepadEx driver1;
 
     MecanumDrive drive;
 
@@ -49,17 +48,15 @@ public class BaseController {
         odo = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
         odo.recalibrateIMU();
         odo.resetPosAndIMU();
-
-        driver1 = new GamepadEx(gamepad1);
     }
 
-    public void update(double turnCoeff,boolean squareInput){
+    public void update(double leftX,double leftY,double rightX, double turnCoeff,boolean squareInput){
         odo.update(GoBildaPinpointDriver.readData.ONLY_UPDATE_HEADING);
 
         drive.driveFieldCentric(
-                driver1.getLeftX(),
-                driver1.getLeftY(),
-                driver1.getRightX() / turnCoeff,
+                leftX,
+                leftY,
+                rightX /turnCoeff,
                 Math.toDegrees(odo.getHeading()),
                 squareInput
         );

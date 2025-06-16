@@ -38,13 +38,14 @@ public class AlohaTeleop extends LinearOpMode {
 
         actionsController = new ActionsController(hardwareMap);
         baseController = new BaseController();
+        baseController.initialize(hardwareMap);
 
         telemetry.addData("Status, ","Initialized");
         waitForStart();
 
         while (opModeIsActive()){
-            if (isExtended){baseController.update(4,true);}
-            else{baseController.update(4,true);}
+            if (isExtended){baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),4,true);}
+            else{baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),1,true);}
 
             driver1.readButtons();
             driver2.readButtons();
