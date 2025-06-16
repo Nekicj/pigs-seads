@@ -3,6 +3,7 @@ package Controllers;
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 @Config
 public class IntakeController {
@@ -19,6 +20,16 @@ public class IntakeController {
     public static double intakeRotatePos = 0.46;
 
     private double clawRotateCounter = 4;
+
+    private static final double[] CLAW_ROTATE_POSITIONS = {
+            Servos.INTAKE_CLAW_ROTATE_1.getPos(),
+            Servos.INTAKE_CLAW_ROTATE_2.getPos(),
+            Servos.INTAKE_CLAW_ROTATE_3.getPos(),
+            Servos.INTAKE_CLAW_ROTATE_4.getPos(),
+            Servos.INTAKE_CLAW_ROTATE_5.getPos(),
+            Servos.INTAKE_CLAW_ROTATE_6.getPos(),
+            Servos.INTAKE_CLAW_ROTATE_7.getPos()
+    };
 
     public static enum Servos{
         CLAW_OPEN(0.4),
@@ -70,82 +81,60 @@ public class IntakeController {
 
     }
 
-    public void setClawOpen(){
-        intakeClaw.setPosition(Servos.CLAW_OPEN.getPos());
-    }
-
-    public void setClawClose(){
-        intakeClaw.setPosition(Servos.CLAW_CLOSE.getPos());
+    private void safeSetPosition(Servo servo, double position) {
+        if (servo != null) {
+            position = Range.clip(position, 0, 1);
+            servo.setPosition(position);
+        }
     }
 
     public void setIntakeAim(){
-        intakeArm.setPosition(Servos.INTAKE_ARM_AIM.getPos());
-        intakeKrutilka.setPosition(Servos.INTAKE_KRUTILKA_AIM.getPos());
-    }
+        safeSetPosition(intakeArm,Servos.INTAKE_ARM_AIM.getPos());
+        safeSetPosition(intakeKrutilka,Servos.INTAKE_KRUTILKA_AIM.getPos());}
 
     public void setIntakeTake(){
-        intakeArm.setPosition(Servos.INTAKE_ARM_TAKE.getPos());
-        intakeKrutilka.setPosition(Servos.INTAKE_KRUTILKA_TAKE.getPos());
-
-    }
+        safeSetPosition(intakeArm,Servos.INTAKE_ARM_TAKE.getPos());
+        safeSetPosition(intakeKrutilka,Servos.INTAKE_KRUTILKA_TAKE.getPos());}
 
     public void setIntakeToTransfer(){
-        intakeArm.setPosition(Servos.INTAKE_ARM_TRANSFER.getPos());
-        intakeKrutilka.setPosition(Servos.INTAKE_KRUTILKA_TRANSFER.getPos());
-        intakeRotate.setPosition(Servos.INTAKE_ROTATE_MIDDLE.getPos());
-    }
+        safeSetPosition(intakeArm,Servos.INTAKE_ARM_TRANSFER.getPos());
+        safeSetPosition(intakeKrutilka,Servos.INTAKE_KRUTILKA_TRANSFER.getPos());
+        safeSetPosition(intakeRotate,Servos.INTAKE_ROTATE_MIDDLE.getPos());}
 
-    public void intakeRotateControl(double left_trigger,double right_trigger){
-        intakeRotatePos += left_trigger * rotateIntakeSpeed;
-        intakeRotatePos -= right_trigger* rotateIntakeSpeed;
+        public void intakeRotateControl(double left_trigger,double right_trigger){
+            intakeRotatePos += left_trigger * rotateIntakeSpeed;
+            intakeRotatePos -= right_trigger* rotateIntakeSpeed;
 
-        intakeRotate.setPosition(intakeRotatePos);
-    }
+            intakeRotatePos = Math.max(0, Math.min(1, intakeRotatePos));
 
-    public void setRotateClaw(double rotate){
-        clawRotateCounter = rotate;
+            safeSetPosition(intakeRotate,intakeRotatePos);
+        }
+
+    public void setRotateClaw(double rotate) {
+        clawRotateCounter = Math.max(1, Math.min(7, rotate));
         updateRotateClaw();
     }
-    public void rotateClaw(boolean up){
-        if (up && clawRotateCounter > 1){
-            clawRotateCounter -= 1;
-        }else if (!up && clawRotateCounter < 7){
-            clawRotateCounter +=1;
-        }
+
+    public void rotateClaw(boolean up) {
+        clawRotateCounter = up
+                ? Math.max(1, clawRotateCounter - 1)
+                : Math.min(7, clawRotateCounter + 1);
 
         updateRotateClaw();
     }
-    public void updateRotateClaw(){
-        if (clawRotateCounter == 1){
-            clawRotate.setPosition(Servos.INTAKE_CLAW_ROTATE_1.getPos());
-        }else if(clawRotateCounter == 2){
-            clawRotate.setPosition(Servos.INTAKE_CLAW_ROTATE_2.getPos());
-        }else if(clawRotateCounter == 3){
-            clawRotate.setPosition(Servos.INTAKE_CLAW_ROTATE_3.getPos());
-        }else if(clawRotateCounter == 4){
-            clawRotate.setPosition(Servos.INTAKE_CLAW_ROTATE_4.getPos());
-        }else if(clawRotateCounter == 5){
-            clawRotate.setPosition(Servos.INTAKE_CLAW_ROTATE_5.getPos());
-        }else if(clawRotateCounter == 6){
-            clawRotate.setPosition(Servos.INTAKE_CLAW_ROTATE_6.getPos());
+
+    public void updateRotateClaw() {
+        if (clawRotateCounter >= 1 && clawRotateCounter <= 7) {
+            int index = (int) clawRotateCounter - 1;
+            safeSetPosition(clawRotate,CLAW_ROTATE_POSITIONS[index]);
         }
-
-        else if(clawRotateCounter == 7){
-            clawRotate.setPosition(Servos.INTAKE_CLAW_ROTATE_7.getPos());
-        }
-
     }
 
-    public void setIntakeClawPosition(double position){
-        intakeClaw.setPosition(position);
-    }
-
-    public void setClawRotatePosition(double position){
-        clawRotate.setPosition(position);
-    }
-
-
+    public void setClawOpen(){safeSetPosition(intakeClaw,Servos.CLAW_OPEN.getPos());}
+    public void setClawClose(){safeSetPosition(intakeClaw,Servos.CLAW_CLOSE.getPos());}
+    public void setIntakeClawPosition(double position){safeSetPosition(intakeClaw,position);}
+    public void setClawRotatePosition(double position){safeSetPosition(clawRotate,position);}
     public double getIntakeRotatePos(){return intakeRotatePos;}
-    public void setIntakeRotatePos(double position){intakeRotate.setPosition(position);}
+    public void setIntakeRotatePos(double position){safeSetPosition(intakeRotate,position);}
 
 }
