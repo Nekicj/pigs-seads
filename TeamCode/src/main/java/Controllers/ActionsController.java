@@ -13,15 +13,12 @@ public class ActionsController {
     public static double INTAKE_TIME_TAKE = 0.06;
 
     //  00Transfer
-    public static double TRANSFER_TO_TRANS = 0.8;
     public static double TRANSFER_TO_TAKE_SAMPLE = 0.5;
-    public static double TRANSFER_TO_ROTATE_CLAW = 1.5;
 
 
     //==============================================================================================
 
 
-    //private final LiftController liftController;
     private final OuttakeController outtakeController;
     private final LiftController liftController;
     private final ExtendController extendController;
@@ -32,10 +29,7 @@ public class ActionsController {
     private final CommandScheduler intakeScheduler = new CommandScheduler();
     private final CommandScheduler transferSchedule = new CommandScheduler();
 
-    private final ElapsedTime actionTimer = new ElapsedTime();
-
     public ActionsController(HardwareMap hardwareMap){
-        //liftController = new LiftController();
         outtakeController = new OuttakeController();
         liftController = new LiftController();
         intakeController = new IntakeController();
@@ -43,8 +37,6 @@ public class ActionsController {
 
 
         liftController.initialize(hardwareMap);
-
-        //liftController.initialize(hardwareMap);
         outtakeController.initialize(hardwareMap,
                 "OuttakeClaw",
                 "ClawRotate",

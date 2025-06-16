@@ -1,4 +1,4 @@
-package OpModes;
+package Prod;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;

@@ -60,7 +60,7 @@ public class CommandScheduler {
     public void update() {
         if (!isRunning || commandQueue.isEmpty()) return;
 
-        // Обработка активной задержки
+        // обработка задержки
         if (isDelayActive) {
             if (timer.seconds() >= delayEndTime) {
                 isDelayActive = false;
