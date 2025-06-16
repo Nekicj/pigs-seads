@@ -27,7 +27,6 @@ public class AlohaTeleop extends LinearOpMode {
     private boolean isIntakeTaken = false;
     private boolean isExtended = false;
     private boolean isIntakeOpen = false;
-    private boolean isBusket = false;
 
     private double extendLenght = 0f;
     public static double extendSpeed = 0.006;

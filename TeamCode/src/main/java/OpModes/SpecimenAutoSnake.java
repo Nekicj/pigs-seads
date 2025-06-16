@@ -26,8 +26,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import auto.constants.FConstants;
 import auto.constants.LConstants;
 
-@Autonomous(name = "SpecimenAutoSnake", group = "Autobotz")
-public class bestAutoSnake extends OpMode {
+@Autonomous(name = "SpecimenAutoSnake", group = "Competition")
+public class SpecimenAutoSnake extends OpMode {
 
     private Follower follower;
     private OuttakeController outtakeController;
