@@ -4,6 +4,8 @@ import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import OpModes.AlohaTeleop;
+
 @Config
 public class ActionsController {
     //TIME VARIABLES ===============================================================================
@@ -14,6 +16,7 @@ public class ActionsController {
 
     //  00Transfer
     public static double TRANSFER_TO_TAKE_SAMPLE = 0.5;
+    public static double TRANSFER_TO_BUSKET = 0.3;
 
 
     //==============================================================================================
@@ -139,6 +142,15 @@ public class ActionsController {
         intakeScheduler.start();
     }
 
+    public void toTehnoZ(){
+        intakeScheduler.clearQueue();
+        intakeScheduler.setAutoReset(false);
+
+        intakeScheduler.scheduleCommand(intakeController::setTehnoZ);
+
+        intakeScheduler.start();
+    }
+
     public void setTransfer(){
         transferSchedule.clearQueue();
         transferSchedule.setAutoReset(false);
@@ -161,12 +173,12 @@ public class ActionsController {
         transferSchedule.scheduleCommand(() -> liftController.setTargetPosition(0));
         transferSchedule.scheduleCommand(outtakeController::setClawClose);
 
-        transferSchedule.scheduleDelay(0.6);
-        transferSchedule.scheduleCommand(intakeController::setClawOpen);
-
-        transferSchedule.scheduleCommand(intakeController::setClawOpen);
-
         transferSchedule.scheduleDelay(TRANSFER_TO_TAKE_SAMPLE);
+        transferSchedule.scheduleCommand(intakeController::setClawOpen);
+
+        transferSchedule.scheduleCommand(intakeController::setClawOpen);
+
+        transferSchedule.scheduleDelay(TRANSFER_TO_BUSKET);
         transferSchedule.scheduleCommand(outtakeController::setOuttakeToBasket);
 
         transferSchedule.scheduleCommand(outtakeController::setOuttakeToBasket);
@@ -184,6 +196,7 @@ public class ActionsController {
 
         intakeScheduler.scheduleCommand(intakeController::setIntakeToTransfer);
         intakeScheduler.scheduleCommand(()->intakeController.setClawRotatePosition(IntakeController.Servos.INTAKE_CLAW_ROTATE_4.getPos()));
+
 
         intakeScheduler.start();
     }

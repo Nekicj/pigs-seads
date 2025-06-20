@@ -28,7 +28,7 @@ public class AlohaTeleop extends LinearOpMode {
     private boolean isExtended = false;
     private boolean isIntakeOpen = false;
 
-    private double extendLenght = 0f;
+    public double extendLenght = 0f;
     public static double extendSpeed = 0.006;
 
     @Override
@@ -100,6 +100,10 @@ public class AlohaTeleop extends LinearOpMode {
             if (driver1.wasJustPressed(GamepadKeys.Button.B)){
                 isIntakeOpen = !isIntakeOpen;
                 actionsController.setClaws(isIntakeOpen);}
+
+            if (driver1.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)){
+                actionsController.toTehnoZ();
+            }
 
 
             if (driver1.wasJustPressed(GamepadKeys.Button.LEFT_BUMPER)){

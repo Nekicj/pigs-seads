@@ -13,8 +13,8 @@ public class IntakeController {
     private Servo intakeArm = null;
     private Servo intakeKrutilka = null;
 
-    public static double INTAKE_ARM_TRANSFER_A = 1;
-    public static double INTAKE_KRUTILKA_TRANSFER_A = 0.65;
+    public static double INTAKE_ARM_TRANSFER_A = 0.48; // 0.4
+    public static double INTAKE_KRUTILKA_TRANSFER_A = 0.38;  //0.35
 
     public static double rotateIntakeSpeed = 0.006;
     public static double intakeRotatePos = 0.46;
@@ -32,27 +32,32 @@ public class IntakeController {
     };
 
     public static enum Servos{
-        CLAW_OPEN(0.4),
-        CLAW_CLOSE(0.3),
+        CLAW_OPEN(0.53),
+        CLAW_CLOSE(0.48),
 
-        INTAKE_ARM_AIM(0.72),
-        INTAKE_KRUTILKA_AIM(0.1),
+        INTAKE_ARM_AIM(0.2),
+        INTAKE_KRUTILKA_AIM(0.91),
 
-        INTAKE_ARM_TAKE(0.64),
-        INTAKE_KRUTILKA_TAKE(0.065),
+        INTAKE_ARM_TAKE(0.13),
+        INTAKE_KRUTILKA_TAKE(0.94),
 
         INTAKE_ARM_TRANSFER(INTAKE_ARM_TRANSFER_A),
         INTAKE_KRUTILKA_TRANSFER(INTAKE_KRUTILKA_TRANSFER_A),
 
-        INTAKE_ROTATE_MIDDLE(0.46),
+        INTAKE_ROTATE_MIDDLE(0.493),
 
         INTAKE_CLAW_ROTATE_1(1),
         INTAKE_CLAW_ROTATE_2(0.82),
         INTAKE_CLAW_ROTATE_3(0.7),
-        INTAKE_CLAW_ROTATE_4(0.5),
+        INTAKE_CLAW_ROTATE_4(0.5), //MIDDLE
         INTAKE_CLAW_ROTATE_5(0.3),
         INTAKE_CLAW_ROTATE_6(0.16),
-        INTAKE_CLAW_ROTATE_7(0);
+        INTAKE_CLAW_ROTATE_7(0),
+
+        INTAKE_ARM_TEHNOZ(0.18),
+        INTAKE_ROTATE_TEHNOZ(0.7),
+        INTAKE_KRUTILKA_TEHNOZ(0.2),
+        INTAKE_CLAW_ROTATE_TEHNOZ(0.16);
 
 
         private final double position;
@@ -88,18 +93,27 @@ public class IntakeController {
         }
     }
 
+    public void setTehnoZ(){
+        safeSetPosition(intakeArm,Servos.INTAKE_ARM_TEHNOZ.getPos());
+        safeSetPosition(intakeRotate,Servos.INTAKE_ROTATE_TEHNOZ.getPos());
+        safeSetPosition(intakeKrutilka,Servos.INTAKE_KRUTILKA_TEHNOZ.getPos());
+        safeSetPosition(clawRotate,Servos.INTAKE_CLAW_ROTATE_TEHNOZ.getPos());
+    }
+
     public void setIntakeAim(){
         safeSetPosition(intakeArm,Servos.INTAKE_ARM_AIM.getPos());
-        safeSetPosition(intakeKrutilka,Servos.INTAKE_KRUTILKA_AIM.getPos());}
+        safeSetPosition(intakeRotate,Servos.INTAKE_KRUTILKA_AIM.getPos());
+        safeSetPosition(intakeKrutilka,Servos.INTAKE_ROTATE_MIDDLE.getPos());}
 
-    public void setIntakeTake(){
+
+public void setIntakeTake(){
         safeSetPosition(intakeArm,Servos.INTAKE_ARM_TAKE.getPos());
-        safeSetPosition(intakeKrutilka,Servos.INTAKE_KRUTILKA_TAKE.getPos());}
+        safeSetPosition(intakeRotate,Servos.INTAKE_KRUTILKA_TAKE.getPos());}
 
     public void setIntakeToTransfer(){
         safeSetPosition(intakeArm,Servos.INTAKE_ARM_TRANSFER.getPos());
-        safeSetPosition(intakeKrutilka,Servos.INTAKE_KRUTILKA_TRANSFER.getPos());
-        safeSetPosition(intakeRotate,Servos.INTAKE_ROTATE_MIDDLE.getPos());}
+        safeSetPosition(intakeRotate,Servos.INTAKE_KRUTILKA_TRANSFER.getPos());
+        safeSetPosition(intakeKrutilka,Servos.INTAKE_ROTATE_MIDDLE.getPos());}
 
         public void intakeRotateControl(double left_trigger,double right_trigger){
             intakeRotatePos += left_trigger * rotateIntakeSpeed;
@@ -107,7 +121,7 @@ public class IntakeController {
 
             intakeRotatePos = Math.max(0, Math.min(1, intakeRotatePos));
 
-            safeSetPosition(intakeRotate,intakeRotatePos);
+            safeSetPosition(intakeKrutilka,intakeRotatePos);
         }
 
     public void setRotateClaw(double rotate) {

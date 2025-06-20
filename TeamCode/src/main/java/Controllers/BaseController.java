@@ -33,10 +33,15 @@ public class BaseController {
         Rback.setInverted(true);
         Rfront.setInverted(true);
 
-        Lfront.setRunMode(Motor.RunMode.VelocityControl);
-        Rfront.setRunMode(Motor.RunMode.VelocityControl);
-        Lback.setRunMode(Motor.RunMode.VelocityControl);
-        Rback.setRunMode(Motor.RunMode.VelocityControl);
+//        Lfront.setRunMode(Motor.RunMode.VelocityControl);
+//        Rfront.setRunMode(Motor.RunMode.VelocityControl);
+//        Lback.setRunMode(Motor.RunMode.VelocityControl);
+//        Rback.setRunMode(Motor.RunMode.VelocityControl);
+
+        Lfront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        Rfront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        Lback.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        Rback.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
 
         drive = new MecanumDrive(
                 Lfront,

@@ -11,23 +11,24 @@ public class OuttakeController {
     private Servo armLeft = null;
     private Servo armRight = null;
 
-    public static double CLAW_OPEN_V = 1;
-    public static double CLAW_CLOSE_V = 0;
-    public static double outtake_push_basket = 0.65;
+    public static double CLAW_OPEN_V = 0.2;
+    public static double CLAW_CLOSE_V = 0.4;
+    public static double outtake_push_basket = 0.5;
 
     public static enum Servos{
-        OUTTAKE_TAKE_SPECIMEN(0.92),
-        OUTTAKE_PUSH_SPECIMEN(0.22),
+        OUTTAKE_TAKE_SPECIMEN(0.86),
+        OUTTAKE_PUSH_SPECIMEN(0.1),
 
         OUTTAKE_PUSH_BASKET(outtake_push_basket),
+        OUTTAKE_ROTATE_BASKET(0.25),
 
         CLAW_OPEN(CLAW_OPEN_V),
         CLAW_CLOSE(CLAW_CLOSE_V),
 
-        CLAW_ROTATE_TAKE_SPECIMEN(0.95),
-        CLAW_ROTATE_PUSH_SPECIMEN(0.8),
+        CLAW_ROTATE_TAKE_SPECIMEN(0.1),
+        CLAW_ROTATE_PUSH_SPECIMEN(0.34),
 
-        CLAW_ROTATE_TRANSFER(0.69);
+        CLAW_ROTATE_TRANSFER(0.455);
 
 
 
@@ -56,6 +57,8 @@ public class OuttakeController {
 
 
         if (!isClawOpen) claw.setPosition(Servos.CLAW_CLOSE.getPos());
+
+        
 
     }
 
@@ -95,7 +98,7 @@ public class OuttakeController {
         armLeft.setPosition(Servos.OUTTAKE_PUSH_BASKET.getPos());
         armRight.setPosition(Servos.OUTTAKE_PUSH_BASKET.getPos());
 
-        clawRotate.setPosition(Servos.CLAW_ROTATE_PUSH_SPECIMEN.getPos());
+        clawRotate.setPosition(Servos.OUTTAKE_ROTATE_BASKET.getPos());
     }
 
 
