@@ -14,9 +14,9 @@ import com.pedropathing.util.Timer;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import Controllers.ActionsController;
-import Controllers.LiftController;
-import Controllers.OuttakeController;
+//import Controllers.ActionsController;
+//import Controllers.LiftController;
+//import Controllers.OuttakeController;
 
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -30,8 +30,8 @@ import auto.constants.LConstants;
 public class SpecimenAutoSnake extends OpMode {
 
     private Follower follower;
-    private OuttakeController outtakeController;
-    private ActionsController actionsController;
+//    private OuttakeController outtakeController;
+//    private ActionsController actionsController;
     private Timer pathTimer, opmodeTimer;
     private DelayedPoseAction takeAtSpec1 = new DelayedPoseAction();
     private DelayedPoseAction takeAtSpace6 = new DelayedPoseAction();
@@ -198,14 +198,12 @@ public class SpecimenAutoSnake extends OpMode {
         switch (pathState) {
             case 0:
                 follower.followPath(Score);
-                actionsController.toPushSpecimen();
-                //OutController.OuttakeClip();
                 setPathState(1);
                 break;
             case 1:
                 if(!follower.isBusy()) {
                     //OutController.OuttakeTake();
-                    actionsController.toTakeSpecimen();
+                   // actionsController.toTakeSpecimen();
                     follower.followPath(Grab1,true);
                     setPathState(2);
                 }
@@ -213,15 +211,15 @@ public class SpecimenAutoSnake extends OpMode {
             case 2:
                 if(!follower.isBusy()) {
                     follower.followPath(Grab2,true);
-                    follower.setMaxPower(0.8);
+                   // follower.setMaxPower(0.8);
                     setPathState(3);
                 }
                 break;
             case 3:
                 if(!follower.isBusy()) {
                     follower.followPath(Grab3,true);
-                    actionsController.toTakeSpecimen();
-                    follower.setMaxPower(6);
+                   // actionsController.toTakeSpecimen();
+                    //follower.setMaxPower(6);
                     setPathState(4);
 
                 }
@@ -234,16 +232,16 @@ public class SpecimenAutoSnake extends OpMode {
                     }
 
                     if (stage4 == 1 && stageTimer.seconds() >= 0.5) {
-                        outtakeController.setClawClose();
+                       // outtakeController.setClawClose();
                         stage4 = 2;
                         stageTimer.reset();
                     }
 
                     if (stage4 == 2 && stageTimer.seconds() >= 0.5) {
                         follower.followPath(Clip2, true);
-                        outtakeController.setOuttakeToPush();
-                        outtakeController.setClawRotateToPush();
-                        actionsController.setLiftTarget(LiftController.Position.SPECIMEN_PUSH.getPos());
+                       // outtakeController.setOuttakeToPush();
+                       // outtakeController.setClawRotateToPush();
+                       // actionsController.setLiftTarget(LiftController.Position.SPECIMEN_PUSH.getPos());
                         hasTakenAtSpec1 = false;
                         setPathState(5);
                         stage4 = 0;
@@ -259,16 +257,16 @@ public class SpecimenAutoSnake extends OpMode {
                     }
 
                     if (stage5 == 1 && stageTimer5.seconds() >= 0.5) {
-                        outtakeController.setClawClose();
+                       // outtakeController.setClawClose();
                         stage5 = 2;
                         stageTimer5.reset();
                     }
 
                     if (stage5 == 2 && stageTimer5.seconds() >= 0.5) {
                         follower.followPath(Clip3, true);
-                        outtakeController.setOuttakeToPush();
-                        outtakeController.setClawRotateToPush();
-                        actionsController.setLiftTarget(LiftController.Position.SPECIMEN_PUSH.getPos());
+                        //outtakeController.setOuttakeToPush();
+                        //outtakeController.setClawRotateToPush();
+                        //actionsController.setLiftTarget(LiftController.Position.SPECIMEN_PUSH.getPos());
                         hasTakenAtSpec1 = false;
                         setPathState(6);
                         stage5 = 0;
@@ -283,15 +281,15 @@ public class SpecimenAutoSnake extends OpMode {
                     }
 
                     if (stage6 == 1 && stageTimer6.seconds() >= 0.5) {
-                        outtakeController.setClawClose();
+                        //outtakeController.setClawClose();
                         stage6 = 2;
                         stageTimer6.reset();
                     }
 
                     if (stage6 == 2 && stageTimer6.seconds() >= 0.5) {
-                        outtakeController.setOuttakeToPush();
-                        outtakeController.setClawRotateToPush();
-                        actionsController.setLiftTarget(LiftController.Position.SPECIMEN_PUSH.getPos());
+                        //outtakeController.setOuttakeToPush();
+                        //outtakeController.setClawRotateToPush();
+                        //actionsController.setLiftTarget(LiftController.Position.SPECIMEN_PUSH.getPos());
                         follower.followPath(Clip4, true);
                         hasTakenAtSpec1 = false;
                         setPathState(7);
@@ -321,7 +319,7 @@ public class SpecimenAutoSnake extends OpMode {
         follower.update();
         autonomousPathUpdate();
         Pose pose = follower.getPose();
-        actionsController.update();
+//        actionsController.update();
 
 //        if (pathState == 5) {
 //            takeAtSpec1.run(pose, Spec1, 2.0, 1.0, () -> {
@@ -345,8 +343,8 @@ public class SpecimenAutoSnake extends OpMode {
             Pose currentPose = follower.getPose();
             if (Math.abs(currentPose.getX() - toSpace.getX()) < 2 &&
                     Math.abs(currentPose.getY() - toSpace.getY()) < 2) {
-                outtakeController.setClawOpen();
-                actionsController.toTakeSpecimen();
+                //outtakeController.setClawOpen();
+                //actionsController.toTakeSpecimen();
 
                 hasTakenAtSpec1 = true;
             }
@@ -355,8 +353,8 @@ public class SpecimenAutoSnake extends OpMode {
             Pose currentPose = follower.getPose();
             if (Math.abs(currentPose.getX() - toSpace.getX()) < 2 &&
                     Math.abs(currentPose.getY() - toSpace.getY()) < 2) {
-                outtakeController.setClawOpen();
-                actionsController.toTakeSpecimen();
+                //outtakeController.setClawOpen();
+                //actionsController.toTakeSpecimen();
                 hasTakenAtSpec1 = true;
             }
         }
@@ -364,8 +362,8 @@ public class SpecimenAutoSnake extends OpMode {
             Pose currentPose = follower.getPose();
             if (Math.abs(currentPose.getX() - toSpace.getX()) < 2 &&
                     Math.abs(currentPose.getY() - toSpace.getY()) < 2) {
-                outtakeController.setClawOpen();
-                actionsController.toTakeSpecimen();
+               // outtakeController.setClawOpen();
+                //actionsController.toTakeSpecimen();
                 hasTakenAtSpec1 = true;
             }
         }
@@ -383,23 +381,23 @@ public class SpecimenAutoSnake extends OpMode {
 
     @Override
     public void init() {
-        outtakeController = new OuttakeController();
-
-        outtakeController.initialize(hardwareMap,
-                "OuttakeClaw",
-                "ClawRotate",
-                "OuttakeArmLeft",
-                "OuttakeArmRight",
-                false);
+//        outtakeController = new OuttakeController();
+//
+//        outtakeController.initialize(hardwareMap,
+//                "OuttakeClaw",
+//                "ClawRotate",
+//                "OuttakeArmLeft",
+//                "OuttakeArmRight",
+//                false);
 
 
         pathTimer = new Timer();
         opmodeTimer = new Timer();
         opmodeTimer.resetTimer();
-        actionsController = new ActionsController(hardwareMap);
-        actionsController.setExtendTarget(0);
-        actionsController.setLiftToTransfer();
-        outtakeController.setClawRotateToPush();
+//        actionsController = new ActionsController(hardwareMap);
+//        actionsController.setExtendTarget(0);
+//        actionsController.setLiftToTransfer();
+//        outtakeController.setClawRotateToPush();
 
 
 
