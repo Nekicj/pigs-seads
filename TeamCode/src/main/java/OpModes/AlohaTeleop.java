@@ -29,7 +29,7 @@ public class AlohaTeleop extends LinearOpMode {
     private boolean isIntakeOpen = false;
 
     public double extendLenght = 0f;
-    public static double extendSpeed = 0.006;
+    public static double extendSpeed = 0.003;
 
     @Override
     public void runOpMode(){
@@ -44,13 +44,13 @@ public class AlohaTeleop extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()){
-            if (isExtended){baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),4,true);}
+            if (isExtended){baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),2.5,true);}
             else{baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),1,true);}
 
             driver1.readButtons();
             driver2.readButtons();
 
-            if (driver2.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)){ //TAKE THIS SHIT
+            if (driver2.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER))     { //TAKE THIS SHIT
                 actionsController.toTakeSpecimen();}
 
 
@@ -75,17 +75,19 @@ public class AlohaTeleop extends LinearOpMode {
                 if(!isIntakeTaken){
                     actionsController.toIntakeTake();
                     isIntakeTaken = true;
+                    isIntakeOpen = false;
                 }else{
                     actionsController.setIntakeClaw(true);
                     isIntakeTaken = false;
+                    isIntakeOpen = true;
                 }
             }
 
-            if (driver2.wasJustPressed(GamepadKeys.Button.Y)){
+            if (driver2.wasJustPressed(GamepadKeys.Button.Y) || driver1.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
                 isExtended = false;
                 actionsController.setTransferNBusket();
                 extendLenght = 0;
-            }else if(driver2.wasJustPressed(GamepadKeys.Button.A)){
+            }else if(driver2.wasJustPressed(GamepadKeys.Button.A) || driver1.wasJustPressed(GamepadKeys.Button.DPAD_DOWN) ){
                 actionsController.setLiftToTransfer();
             }
 
@@ -97,7 +99,7 @@ public class AlohaTeleop extends LinearOpMode {
                 extendLenght += extendSpeed;}
 
 
-            if (driver1.wasJustPressed(GamepadKeys.Button.B)){
+            if (driver1.wasJustPressed(GamepadKeys.Button.B) || driver1.wasJustPressed(GamepadKeys.Button.RIGHT_STICK_BUTTON)){
                 isIntakeOpen = !isIntakeOpen;
                 actionsController.setClaws(isIntakeOpen);}
 

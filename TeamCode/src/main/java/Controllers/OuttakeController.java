@@ -26,9 +26,9 @@ public class OuttakeController {
         CLAW_CLOSE(CLAW_CLOSE_V),
 
         CLAW_ROTATE_TAKE_SPECIMEN(0.1),
-        CLAW_ROTATE_PUSH_SPECIMEN(0.34),
+        CLAW_ROTATE_PUSH_SPECIMEN(0.28),
 
-        CLAW_ROTATE_TRANSFER(0.455);
+        CLAW_ROTATE_TRANSFER(0.445);
 
 
 

@@ -28,8 +28,8 @@ public class LiftController {
     public enum Position{
         HOME(0),
         SPECIMEN_TAKE(0),
-        SPECIMEN_PUSH(310),
-        MAX(650);
+        SPECIMEN_PUSH(300),
+        MAX(630);
 
         Position(int pos){
             this.position = pos;
