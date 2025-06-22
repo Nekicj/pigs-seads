@@ -219,8 +219,6 @@ public class ActionsController {
         outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToTransfer);
 
         outtakeScheduler.start();
-
-
     }
     public void setOuttakeToBasket(){
         outtakeScheduler.clearQueue();
