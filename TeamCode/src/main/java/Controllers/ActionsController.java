@@ -85,6 +85,7 @@ public class ActionsController {
 
         outtakeScheduler.scheduleCommand(() -> liftController.setTargetPosition(LiftController.Position.SPECIMEN_PUSH.getPos()));
         outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToPush);
+        //outtakeScheduler.scheduleCommand(() -> outtakeController.setPwmArms(false));
         outtakeScheduler.scheduleCommand(outtakeController::setClawRotateToPush);
 
         outtakeScheduler.start();
