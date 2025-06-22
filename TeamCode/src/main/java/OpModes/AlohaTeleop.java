@@ -6,7 +6,7 @@ import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
-import com.pedropathing.localization.GoBildaPinpointDriver;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -31,6 +31,8 @@ public class AlohaTeleop extends LinearOpMode {
     public double extendLenght = 0f;
     public static double extendSpeed = 0.003;
 
+
+
     @Override
     public void runOpMode(){
         driver1 = new GamepadEx(gamepad1);
@@ -44,6 +46,8 @@ public class AlohaTeleop extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()){
+
+
             if (isExtended){baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),2.5,true);}
             else{baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),1,true);}
 
@@ -121,6 +125,7 @@ public class AlohaTeleop extends LinearOpMode {
             telemetry.addData("isTaken",isIntakeTaken);
             telemetry.addData("Action Busy", actionsController.isBusy() ? "YES" : "NO");
             telemetry.addData("extendlength",extendLenght);
+
             telemetry.update();
         }
     }
