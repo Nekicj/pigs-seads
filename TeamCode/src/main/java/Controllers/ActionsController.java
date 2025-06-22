@@ -151,6 +151,17 @@ public class ActionsController {
         intakeScheduler.start();
     }
 
+    public void toIntakeLow(){
+        intakeScheduler.clearQueue();
+        intakeScheduler.setAutoReset(false);
+
+        intakeScheduler.scheduleCommand(intakeController::setIntakeToLow);
+        intakeScheduler.scheduleCommand(()->intakeController.setClawRotatePosition(IntakeController.Servos.INTAKE_CLAW_ROTATE_4.getPos()));
+
+
+        intakeScheduler.start();
+    }
+
     public void setTransfer(){
         transferSchedule.clearQueue();
         transferSchedule.setAutoReset(false);

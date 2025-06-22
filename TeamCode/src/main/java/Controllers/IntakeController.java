@@ -44,6 +44,8 @@ public class IntakeController {
         INTAKE_ARM_TRANSFER(INTAKE_ARM_TRANSFER_A),
         INTAKE_KRUTILKA_TRANSFER(INTAKE_KRUTILKA_TRANSFER_A),
 
+        INTAKE_ARM_LOW(0.3),
+
         INTAKE_ROTATE_MIDDLE(0.493),
 
         INTAKE_CLAW_ROTATE_1(1),
@@ -106,7 +108,7 @@ public class IntakeController {
         safeSetPosition(intakeKrutilka,Servos.INTAKE_ROTATE_MIDDLE.getPos());}
 
 
-public void setIntakeTake(){
+    public void setIntakeTake(){
         safeSetPosition(intakeArm,Servos.INTAKE_ARM_TAKE.getPos());
         safeSetPosition(intakeRotate,Servos.INTAKE_KRUTILKA_TAKE.getPos());}
 
@@ -115,14 +117,19 @@ public void setIntakeTake(){
         safeSetPosition(intakeRotate,Servos.INTAKE_KRUTILKA_TRANSFER.getPos());
         safeSetPosition(intakeKrutilka,Servos.INTAKE_ROTATE_MIDDLE.getPos());}
 
-        public void intakeRotateControl(double left_trigger,double right_trigger){
-            intakeRotatePos += left_trigger * rotateIntakeSpeed;
-            intakeRotatePos -= right_trigger* rotateIntakeSpeed;
+    public void setIntakeToLow(){
+        safeSetPosition(intakeArm,Servos.INTAKE_ARM_LOW.getPos());
+        safeSetPosition(intakeRotate,Servos.INTAKE_KRUTILKA_TRANSFER.getPos());
+        safeSetPosition(intakeKrutilka,Servos.INTAKE_ROTATE_MIDDLE.getPos());}
 
-            intakeRotatePos = Math.max(0, Math.min(1, intakeRotatePos));
+    public void intakeRotateControl(double left_trigger,double right_trigger){
+        intakeRotatePos += left_trigger * rotateIntakeSpeed;
+        intakeRotatePos -= right_trigger* rotateIntakeSpeed;
 
-            safeSetPosition(intakeKrutilka,intakeRotatePos);
-        }
+        intakeRotatePos = Math.max(0, Math.min(1, intakeRotatePos));
+
+        safeSetPosition(intakeKrutilka,intakeRotatePos);
+    }
 
     public void setRotateClaw(double rotate) {
         clawRotateCounter = Math.max(1, Math.min(7, rotate));
