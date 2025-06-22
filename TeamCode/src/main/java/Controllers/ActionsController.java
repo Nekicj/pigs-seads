@@ -265,4 +265,18 @@ public class ActionsController {
         intakeController.setRotateClaw(4);
     }
 
+
+    public void liftManual(boolean toUp, double speed){
+        double liftTarget = liftController.getCurrentPosition();
+
+        if (toUp && liftTarget < LiftController.Position.MAX.getPos()){
+            liftTarget += speed;
+        }
+        else if(!toUp && liftTarget > 0){
+            liftTarget -= speed;
+        }
+
+        liftController.setTargetPosition(liftTarget);
+    }
+
 }

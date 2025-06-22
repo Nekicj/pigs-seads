@@ -28,6 +28,8 @@ public class AlohaTeleop extends LinearOpMode {
     private boolean isExtended = false;
     private boolean isIntakeOpen = false;
 
+    public static double liftChangeSpeed = 1;
+
     public double extendLenght = 0f;
     public static double extendSpeed = 0.003;
 
@@ -113,6 +115,10 @@ public class AlohaTeleop extends LinearOpMode {
             }else if (driver1.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER)){
                 actionsController.clawRotate(false);}
 
+            if (gamepad2.left_trigger > 0){
+                actionsController.liftManual(false,liftChangeSpeed);}
+            else if (gamepad2.right_trigger > 0){
+                actionsController.liftManual(true,liftChangeSpeed);}
 
             actionsController.setExtendTarget(extendLenght);
             actionsController.update();
