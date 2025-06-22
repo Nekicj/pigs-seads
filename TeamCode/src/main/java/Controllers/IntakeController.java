@@ -13,7 +13,7 @@ public class IntakeController {
     private Servo intakeArm = null;
     private Servo intakeKrutilka = null;
 
-    public static double INTAKE_ARM_TRANSFER_A = 0.48; // 0.4
+    public static double INTAKE_ARM_TRANSFER_A = 0.44; // 0.4
     public static double INTAKE_KRUTILKA_TRANSFER_A = 0.38;  //0.35
 
     public static double rotateIntakeSpeed = 0.006;

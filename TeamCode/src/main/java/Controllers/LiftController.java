@@ -29,7 +29,7 @@ public class LiftController {
         HOME(0),
         SPECIMEN_TAKE(0),
         SPECIMEN_PUSH(300),
-        MAX(630);
+        MAX(610);  //650
 
         Position(int pos){
             this.position = pos;

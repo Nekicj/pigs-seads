@@ -15,8 +15,8 @@ public class ActionsController {
     public static double INTAKE_TIME_TAKE = 0.06;
 
     //  00Transfer
-    public static double TRANSFER_TO_TAKE_SAMPLE = 0.5;
-    public static double TRANSFER_TO_BUSKET = 0.3;
+    public static double TRANSFER_TO_TAKE_SAMPLE = 0.2;
+    public static double TRANSFER_TO_BUSKET = 0.15;
 
 
     //==============================================================================================
