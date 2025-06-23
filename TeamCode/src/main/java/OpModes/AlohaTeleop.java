@@ -111,6 +111,8 @@ public class AlohaTeleop extends LinearOpMode {
 
             if (driver1.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)){
                 actionsController.toTehnoZ();
+            }else if (driver1.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)){
+                actionsController.toIntakeLow();
             }
 
 

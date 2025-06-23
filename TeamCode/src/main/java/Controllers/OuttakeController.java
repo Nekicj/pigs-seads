@@ -80,6 +80,16 @@ public class OuttakeController {
         armRight.setPosition(Servos.OUTTAKE_PUSH_SPECIMEN.getPos());
     }
 
+    public void setPwmArms(boolean isOn){
+        if (isOn){
+            armLeft.getController().pwmEnable();
+            armRight.getController().pwmEnable();
+        }else{
+            armLeft.getController().pwmDisable();
+            armRight.getController().pwmDisable();
+        }
+    }
+
     public void setClawRotateToTake(){
         clawRotate.setPosition(Servos.CLAW_ROTATE_TAKE_SPECIMEN.getPos());
     }

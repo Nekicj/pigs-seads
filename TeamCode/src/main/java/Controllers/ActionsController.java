@@ -85,6 +85,7 @@ public class ActionsController {
 
         outtakeScheduler.scheduleCommand(() -> liftController.setTargetPosition(LiftController.Position.SPECIMEN_PUSH.getPos()));
         outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToPush);
+        //outtakeScheduler.scheduleCommand(() -> outtakeController.setPwmArms(false));
         outtakeScheduler.scheduleCommand(outtakeController::setClawRotateToPush);
 
         outtakeScheduler.start();
@@ -147,6 +148,17 @@ public class ActionsController {
         intakeScheduler.setAutoReset(false);
 
         intakeScheduler.scheduleCommand(intakeController::setTehnoZ);
+
+        intakeScheduler.start();
+    }
+
+    public void toIntakeLow(){
+        intakeScheduler.clearQueue();
+        intakeScheduler.setAutoReset(false);
+
+        intakeScheduler.scheduleCommand(intakeController::setIntakeToLow);
+        intakeScheduler.scheduleCommand(()->intakeController.setClawRotatePosition(IntakeController.Servos.INTAKE_CLAW_ROTATE_4.getPos()));
+
 
         intakeScheduler.start();
     }
