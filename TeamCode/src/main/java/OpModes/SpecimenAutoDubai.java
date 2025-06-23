@@ -68,21 +68,21 @@ public class SpecimenAutoDubai extends OpMode {
 //    private final Pose way1to3 = new Pose(59.19, 7.7, 0 );
 //    private final Pose tohp3 = new Pose(19.5, 7.9, 0);
 private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Starting position
-    private final Pose Spec1 = new Pose(40.2, 68.09, 0);
+    private final Pose Spec1 = new Pose(42.2, 68.09, 0);
     private final Pose CPto1 = new Pose(13.48, 41.12);
     private final Pose Samp1 = new Pose(67.2, 28.11, 0);
 
     private final Pose toHP = new Pose(21.2, 21.65, 0);
     private final Pose Samp2 = new Pose(60.27, 14.95, 0);
     private final Pose CPto2 = new Pose(58.7, 27.46);
-    private final Pose Samp3 = new Pose(61.48,7.7, 0);
-    private final Pose CPto3 = new Pose(57.15, 18.97);
+    private final Pose Samp3 = new Pose(62.48,8.9, 0);
+    private final Pose CPto3 = new Pose(59.15, 18.97);
     private final Pose toHP2 = new Pose(20.2, 7.59, 0);
-    private final Pose toSpace = new Pose(40.8, 65.6, 0);
-    private final Pose toSpaceCP = new Pose(39.5, 67.08, 0);
+    private final Pose toSpace = new Pose(45.8, 65.6, 0);
+    private final Pose toSpaceCP = new Pose(48.2, 67.08, 0);
     private final Pose pickyzone = new Pose(14.8, 31.5, 0);
 
-    private final Pose PickPos = new Pose(8.6, 31.5, 0);
+    private final Pose PickPos = new Pose(9.8, 31.5, 0);
     private final Pose Spec2 = new Pose(7.8+12.91206598205746, 56.06+39.76907356578898, 0.022974112383540985);
 
     private Path Score, Park;
