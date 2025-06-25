@@ -232,7 +232,23 @@ public class ActionsController {
 
         outtakeScheduler.scheduleDelay(2);
         outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToBasket);
+        outtakeScheduler.scheduleCommand(outtakeController::setClawOpen);
 
+        outtakeScheduler.start();
+    }
+    public void setOuttakeToBasketAuto(){
+        outtakeScheduler.clearQueue();
+        outtakeScheduler.setAutoReset(false);
+
+        outtakeScheduler.scheduleCommand(() -> liftController.setTargetPosition(LiftController.Position.MAX.getPos()));
+        outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToBasket);
+
+        outtakeScheduler.scheduleDelay(1);
+        outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToBasket);
+        outtakeScheduler.scheduleCommand(outtakeController::setClawOpen);
+
+        outtakeScheduler.scheduleDelay(1.5);
+        outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToTransfer);
         outtakeScheduler.scheduleCommand(outtakeController::setClawOpen);
 
         outtakeScheduler.start();
