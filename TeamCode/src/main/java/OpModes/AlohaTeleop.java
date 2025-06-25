@@ -61,13 +61,13 @@ public class AlohaTeleop extends LinearOpMode {
             boolean isDefinitelyRed = red > 150 && red > blue * 1.5 && red > green * 1.5;
             boolean isDefinitelyGreen = green > 150 && green > red * 1.5 && green > blue * 1.5;
             if(isDefinitelyBlue){
-                gamepad1.setLedColor(0,0,1,1000);
+                gamepad1.setLedColor(0,0,1,10);
             }
             if(isDefinitelyRed){
-                gamepad1.setLedColor(1,0,0,1000);
+                gamepad1.setLedColor(1,0,0,10);
             }
             if(isDefinitelyGreen){
-                gamepad1.setLedColor(0,1,0,1000);
+                gamepad1.setLedColor(0,1,0,10);
             }
             if(isDefinitelyBlue){
                 gamepad2.setLedColor(0,0,1,1000);
