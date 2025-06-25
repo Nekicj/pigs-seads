@@ -213,6 +213,7 @@ public class ActionsController {
 
         intakeScheduler.start();
     }
+
     public void setLiftToTransfer(){
         outtakeScheduler.clearQueue();
         outtakeScheduler.setAutoReset(false);
@@ -222,6 +223,7 @@ public class ActionsController {
 
         outtakeScheduler.start();
     }
+
     public void setOuttakeToBasket(){
         outtakeScheduler.clearQueue();
         outtakeScheduler.setAutoReset(false);
@@ -239,6 +241,9 @@ public class ActionsController {
 
         outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToBasket);
         outtakeScheduler.scheduleCommand(() -> liftController.setTargetPosition(0));
+        outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToTransfer);
+        outtakeScheduler.scheduleCommand(outtakeController::setClawOpen);
+
 
 
         outtakeScheduler.start();
@@ -267,7 +272,7 @@ public class ActionsController {
 
         intakeScheduler.scheduleCommand(intakeController::setIntakeToTransfer);
         intakeScheduler.scheduleCommand(() -> extendController.setTargetPosition(0));
-        intakeScheduler.scheduleCommand(()->intakeController.setClawRotatePosition(IntakeController.Servos.INTAKE_CLAW_ROTATE_4.getPos()));
+        intakeScheduler.scheduleCommand(()-> intakeController.setClawRotatePosition(IntakeController.Servos.INTAKE_CLAW_ROTATE_4.getPos()));
 
         intakeScheduler.scheduleDelay(1);
         intakeScheduler.scheduleCommand(intakeController::setIntakeTake);

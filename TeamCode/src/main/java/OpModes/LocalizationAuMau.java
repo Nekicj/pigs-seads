@@ -84,7 +84,7 @@ public class LocalizationAuMau extends OpMode {
     private final Pose Park = new Pose(poses[6][0], poses[6][1], Math.toRadians(poses[6][2]));
 
     private Path Score;
-    private PathChain Bomb1, Bomb2, Bomb3, Bomb4, cars, toSamp1, toSamp2, toSamp3;
+    private PathChain Bomb1, Bomb2, Bomb3, Parking, toSamp1, toSamp2, toSamp3;
 
     public class DelayedAction {
         private ElapsedTime timer = new ElapsedTime();
@@ -177,7 +177,10 @@ public class LocalizationAuMau extends OpMode {
                 .setLinearHeadingInterpolation(Samp3.getHeading(), BasketPos.getHeading())
                 .build();
 
-
+        Parking = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(BasketPos), new Point(Park)))
+                .setLinearHeadingInterpolation(BasketPos.getHeading(), Park.getHeading())
+                .build();
     }
 
 
@@ -187,7 +190,7 @@ public class LocalizationAuMau extends OpMode {
             case 0:
                 if (!follower.isBusy()) {
                     if (stage4 == 0) {
-                        follower.followPath(Score,true);
+                        follower.followPath(Score, true);
                         actionsController.setOuttakeToBasket();
                         follower.setMaxPower(0.8);
                         stageTimer.reset();
@@ -195,12 +198,12 @@ public class LocalizationAuMau extends OpMode {
                     }
 
                     if (stage4 == 1 && stageTimer.seconds() >= 3.5) {
-                        follower.followPath(toSamp1,true);
+                        follower.followPath(toSamp1, true);
                         stage4 = 2;
                         stageTimer.reset();
                     }
 
-                    if (stage4 == 2 && stageTimer.seconds() >= 1) {
+                    if (stage4 == 2 && stageTimer.seconds() >= 1) { //1 sample
                         actionsController.setIntakeToTakeAuto();
                         hasTakenAtSpec1 = false;
                         setPathState(1);
@@ -209,14 +212,14 @@ public class LocalizationAuMau extends OpMode {
                 }
                 break;
             case 1:
-                if (!follower.isBusy()) {
+                if (!follower.isBusy()) { //
                     if (stage5 == 0) {
                         stageTimer.reset();
-                        stage4 = 1;
+                        stage5 = 1;
                     }
 
-                    if (stage5 == 1 && stageTimer5.seconds() >= 4) {
-                        follower.followPath(Bomb1,true);
+                    if (stage5 == 1 && stageTimer5.seconds() >= 4) { //score 1
+                        follower.followPath(Bomb1, true);
                         actionsController.setOuttakeToBasket();
                         follower.setMaxPower(0.8);
                         stage5 = 2;
@@ -224,7 +227,7 @@ public class LocalizationAuMau extends OpMode {
                     }
 
                     if (stage5 == 2 && stageTimer5.seconds() >= 4) {
-                        follower.followPath(toSamp2,true);
+                        follower.followPath(toSamp2, true);
                         actionsController.setIntakeToTakeAuto();
                         hasTakenAtSpec1 = false;
                         setPathState(2);
@@ -241,12 +244,14 @@ public class LocalizationAuMau extends OpMode {
 
                     if (stage6 == 1 && stageTimer6.seconds() >= 3) {
                         follower.followPath(Bomb2, true);
+                        actionsController.setOuttakeToBasket();
                         follower.setMaxPower(0.8);
                         stage6 = 2;
                         stageTimer.reset();
                     }
 
                     if (stage6 == 2 && stageTimer6.seconds() >= 4) {
+                        follower.followPath(toSamp3, true);
                         actionsController.setIntakeToTakeAuto();
                         hasTakenAtSpec1 = false;
                         setPathState(3);
@@ -254,71 +259,28 @@ public class LocalizationAuMau extends OpMode {
                     }
                 }
                 break;
-//            case 4:
-//                if(!follower.isBusy()) {
-//                    follower.followPath(Bomb2,true);
-//
-//                    follower.setMaxPower(0.8);
-//                    setPathState(5);
-//
-//                }
-//                break;
-//            case 5:
-//                if (!follower.isBusy()) {
-//                    if (stage5 == 0) {
-//                        stageTimer5.reset();
-//                        stage5 = 1;
-//                    }
-//
-//                    if (stage5 == 1 && stageTimer5.seconds() >= 0.02) {
-//                        actionsController.setClaws(true);
-//                        follower.setMaxPower(1);
-//                        stage5 = 2;
-//                        stageTimer5.reset();
-//                    }
-//
-//                    if (stage5 == 2 && stageTimer5.seconds() >= 0.06) {
-//                        follower.followPath(Bomb2, true);
-//                        actionsController.toPushSpecimen();
-//                        hasTakenAtSpec1 = false;
-//                        setPathState(6);
-//                        stage5 = 0;
-//                    }
-//                }
-//                break;
-//            case 5:
-//                if(!follower.isBusy()) {
-//                    follower.followPath(toSamp3,true);
-//                    follower.setMaxPower(0.9);
-//                    setPathState(6);
-//
-//                }
-//                break;
-//            case 6:
-//                if (!follower.isBusy()) {
-//                    if (stage6 == 0) {
-//                        stageTimer.reset();
-//                        stage6 = 1;
-//                    }
-//
-//                    if (stage6 == 1 && stageTimer.seconds() >= 0.02) {
-//                        actionsController.setClaws(true);
-//                        follower.setMaxPower(1);
-//                        stage6 = 2;
-//                        stageTimer.reset();
-//                    }
-//
-//                    if (stage6 == 2 && stageTimer.seconds() >= 0.06) {
-//                        follower.followPath(Bomb3, true);
-//                        actionsController.toPushSpecimen();
-//                        hasTakenAtSpec1 = false;
-//                        setPathState(7);
-//                        stage6 = 0;
-//                    }
-//                }
-//                break;
+            case 3:
+                if (!follower.isBusy()) {
+                    if (stage7 == 0) {
+                        stageTimer.reset();
+                        stage7 = 1;
+                    }
 
+                    if (stage7 == 1 && stageTimer7.seconds() >= 3) {
+                        follower.followPath(Bomb3, true);
+                        actionsController.setOuttakeToBasket();
+                        follower.setMaxPower(0.8);
+                        stage7 = 2;
+                        stageTimer.reset();
+                    }
 
+                    if (stage7 == 2 && stageTimer7.seconds() >= 3) {
+                        follower.followPath(Parking);
+                        stage7 = 0;
+                        hasTakenAtSpec1 = false;
+                    }
+                }
+                break;
         }
     }
 
