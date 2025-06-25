@@ -8,9 +8,18 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.pedropathing.localization.GoBildaPinpointDriver;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
 
 @Config
 public class BaseController {
+    public static double veloKP = 0.05;
+    public static double veloKI = 0.01;
+    public static double veloKD = 0.09;
+
+    public static double kP = 0.93;
+    public static double kI = 0.47;
+    public static double kD = 0.05;
+
     Motor Lfront = null;
     Motor Rfront = null;
     Motor Rback = null;
@@ -33,15 +42,25 @@ public class BaseController {
         Rback.setInverted(true);
         Rfront.setInverted(true);
 
-//        Lfront.setRunMode(Motor.RunMode.VelocityControl);
-//        Rfront.setRunMode(Motor.RunMode.VelocityControl);
-//        Lback.setRunMode(Motor.RunMode.VelocityControl);
-//        Rback.setRunMode(Motor.RunMode.VelocityControl);
+        Lfront.setRunMode(Motor.RunMode.VelocityControl);
+        Rfront.setRunMode(Motor.RunMode.VelocityControl);
+        Lback.setRunMode(Motor.RunMode.VelocityControl);
+        Rback.setRunMode(Motor.RunMode.VelocityControl);
 
-        Lfront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-        Rfront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-        Lback.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
-        Rback.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        Lfront.setFeedforwardCoefficients(kP,kI,kD);
+        Rfront.setFeedforwardCoefficients(kP,kI,kD);
+        Lback.setFeedforwardCoefficients(kP,kI,kD);
+        Rback.setFeedforwardCoefficients(kP,kI,kD);
+
+        Lfront.setVeloCoefficients(veloKP,veloKI,veloKD);
+        Rfront.setVeloCoefficients(veloKP,veloKI,veloKD);
+        Lback.setVeloCoefficients(veloKP,veloKI,veloKD);
+        Rback.setVeloCoefficients(veloKP,veloKI,veloKD);
+
+        //Lfront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        //Rfront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        //Lback.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        //Rback.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
 
         drive = new MecanumDrive(
                 Lfront,
