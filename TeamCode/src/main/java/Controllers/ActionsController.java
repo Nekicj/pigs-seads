@@ -184,7 +184,6 @@ public class ActionsController {
         transferSchedule.scheduleCommand(()->intakeController.setClawRotatePosition(IntakeController.Servos.INTAKE_CLAW_ROTATE_4.getPos()));
         transferSchedule.scheduleCommand(outtakeController::setOuttakeToTransfer);
         transferSchedule.scheduleCommand(outtakeController::setClawOpen);
-        transferSchedule.scheduleCommand(() -> liftController.setTargetPosition(0));
         transferSchedule.scheduleCommand(outtakeController::setClawClose);
 
         transferSchedule.scheduleDelay(TRANSFER_TO_TAKE_SAMPLE);
@@ -232,26 +231,56 @@ public class ActionsController {
 
         outtakeScheduler.scheduleDelay(2);
         outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToBasket);
+
         outtakeScheduler.scheduleCommand(outtakeController::setClawOpen);
-
-        outtakeScheduler.start();
-    }
-    public void setOuttakeToBasketAuto(){
-        outtakeScheduler.clearQueue();
-        outtakeScheduler.setAutoReset(false);
-
-        outtakeScheduler.scheduleCommand(() -> liftController.setTargetPosition(LiftController.Position.MAX.getPos()));
-        outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToBasket);
 
         outtakeScheduler.scheduleDelay(1);
         outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToBasket);
-        outtakeScheduler.scheduleCommand(outtakeController::setClawOpen);
 
-        outtakeScheduler.scheduleDelay(1.5);
-        outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToTransfer);
-        outtakeScheduler.scheduleCommand(outtakeController::setClawOpen);
+        outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToBasket);
+        outtakeScheduler.scheduleCommand(() -> liftController.setTargetPosition(0));
+
 
         outtakeScheduler.start();
+    }
+
+    public void setIntakeToTakeAuto(){
+        intakeScheduler.clearQueue();
+        intakeScheduler.setAutoReset(false);
+
+        intakeScheduler.scheduleCommand(() -> extendController.setTargetPosition(ExtendController.Positions.EXTEND_MAX.getPos()));
+        intakeScheduler.scheduleCommand(intakeController::setIntakeAim);
+        intakeScheduler.scheduleCommand(outtakeController::setOuttakeToTransfer);
+
+        intakeScheduler.scheduleDelay(1);
+        intakeScheduler.scheduleCommand(intakeController::setIntakeTake);
+
+        intakeScheduler.scheduleCommand(intakeController::setIntakeTake);
+
+        intakeScheduler.scheduleDelay(0.3);
+        intakeScheduler.scheduleCommand(intakeController::setIntakeTake);
+
+        intakeScheduler.scheduleCommand(intakeController::setClawClose);
+
+        intakeScheduler.scheduleDelay(1);
+        intakeScheduler.scheduleCommand(intakeController::setClawClose);
+
+        intakeScheduler.scheduleCommand(intakeController::setIntakeToTransfer);
+        intakeScheduler.scheduleCommand(() -> extendController.setTargetPosition(0));
+        intakeScheduler.scheduleCommand(()->intakeController.setClawRotatePosition(IntakeController.Servos.INTAKE_CLAW_ROTATE_4.getPos()));
+
+        intakeScheduler.scheduleDelay(1);
+        intakeScheduler.scheduleCommand(intakeController::setIntakeTake);
+
+        intakeScheduler.scheduleCommand(outtakeController::setClawClose);
+
+        intakeScheduler.scheduleDelay(1);
+        intakeScheduler.scheduleCommand(intakeController::setIntakeTake);
+
+        intakeScheduler.scheduleCommand(intakeController::setClawOpen);
+        intakeScheduler.scheduleCommand(outtakeController::setClawClose);
+
+        intakeScheduler.start();
     }
 
 

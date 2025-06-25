@@ -193,7 +193,7 @@ public class BasketAutoDubai extends OpMode {
                     }
 
                     if (stage4 == 1 && stageTimer.seconds() >= 0.02) {
-                        actionsController.setOuttakeToBasketAuto();
+                        actionsController.setOuttakeToBasket();
                         follower.setMaxPower(0.7);
                         stage4 = 2;
                         stageTimer.reset();

@@ -80,11 +80,11 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
     private final Pose Samp3 = new Pose(62.48,8.9, 0);
     private final Pose CPto3 = new Pose(59.15, 18.97);
     private final Pose toHP2 = new Pose(20.2, 7.59, 0);
-    private final Pose toSpace = new Pose(42.5, 70, 0);
-    private final Pose toSpaceCP = new Pose(19.8, 68.5, 0);
+    private final Pose toSpace = new Pose(43.3, 70, 0);
+    private final Pose toSpaceCP = new Pose(33, 48.6, 0);
     private final Pose pickyzone = new Pose(14, 33, 0);
 
-    private final Pose PickPos = new Pose(10.4, 33, 0);
+    private final Pose PickPos = new Pose(11.4, 33, 0);
     private final Pose Spec2 = new Pose(7.8+12.91206598205746, 56.06+39.76907356578898, 0.022974112383540985);
 
     private Path Score, Park;
@@ -249,14 +249,14 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
                         stage4 = 1;
                     }
 
-                    if (stage4 == 1 && stageTimer.seconds() >= 0.02) {
+                    if (stage4 == 1 && stageTimer.seconds() >= 0.08) {
                         actionsController.setClaws(true);
                         follower.setMaxPower(1);
                         stage4 = 2;
                         stageTimer.reset();
                     }
 
-                    if (stage4 == 2 && stageTimer.seconds() >= 0.06) {
+                    if (stage4 == 2 && stageTimer.seconds() >= 0.1) {
                         follower.followPath(toClip, true);
                         actionsController.toPushSpecimen();
                         hasTakenAtSpec1 = false;
@@ -290,14 +290,14 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
                         stage5 = 1;
                     }
 
-                    if (stage5 == 1 && stageTimer5.seconds() >= 0.02) {
+                    if (stage5 == 1 && stageTimer5.seconds() >= 0.08) {
                         actionsController.setClaws(true);
                         follower.setMaxPower(1);
                         stage5 = 2;
                         stageTimer5.reset();
                     }
 
-                    if (stage5 == 2 && stageTimer5.seconds() >= 0.06) {
+                    if (stage5 == 2 && stageTimer5.seconds() >= 0.1) {
                         follower.followPath(toClip, true);
                         actionsController.toPushSpecimen();
                         hasTakenAtSpec1 = false;
@@ -331,14 +331,14 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
                         stage6 = 1;
                     }
 
-                    if (stage6 == 1 && stageTimer6.seconds() >= 0.02) {
+                    if (stage6 == 1 && stageTimer6.seconds() >= 0.08) {
                         actionsController.setClaws(true);
                         follower.setMaxPower(1);
                         stage6 = 2;
                         stageTimer6.reset();
                     }
 
-                    if (stage6 == 2 && stageTimer6.seconds() >= 0.06) {
+                    if (stage6 == 2 && stageTimer6.seconds() >= 0.1) {
                         actionsController.toPushSpecimen();
                         follower.followPath(toClip, true);
                         hasTakenAtSpec1 = false;
@@ -371,14 +371,14 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
                         stage7 = 1;
                     }
 
-                    if (stage6 == 1 && stageTimer7.seconds() >= 0.02) {
+                    if (stage6 == 1 && stageTimer7.seconds() >= 0.08) {
                         actionsController.setClaws(true);
                         follower.setMaxPower(1);
                         stage7 = 2;
                         stageTimer7.reset();
                     }
 
-                    if (stage6 == 2 && stageTimer7.seconds() >= 0.06) {
+                    if (stage6 == 2 && stageTimer7.seconds() >= 0.1) {
                         actionsController.toPushSpecimen();
                         follower.followPath(toClip, true);
                         hasTakenAtSpec1 = false;
