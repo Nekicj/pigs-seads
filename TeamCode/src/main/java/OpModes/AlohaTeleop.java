@@ -7,9 +7,12 @@ import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import Controllers.ActionsController;
 import Controllers.BaseController;
@@ -27,6 +30,7 @@ public class AlohaTeleop extends LinearOpMode {
     private boolean isIntakeTaken = false;
     private boolean isExtended = false;
     private boolean isIntakeOpen = false;
+    private RevColorSensorV3 color_sensor;
 
     public static double liftChangeSpeed = 1;
 
@@ -34,21 +38,46 @@ public class AlohaTeleop extends LinearOpMode {
     public static double extendSpeed = 0.003;
 
 
-
     @Override
     public void runOpMode(){
         driver1 = new GamepadEx(gamepad1);
         driver2 = new GamepadEx(gamepad2);
 
+
         actionsController = new ActionsController(hardwareMap);
         baseController = new BaseController();
         baseController.initialize(hardwareMap);
+        color_sensor = hardwareMap.get(RevColorSensorV3.class, "color_sensor");
 
         telemetry.addData("Status, ","Initialized");
         waitForStart();
 
         while (opModeIsActive()){
 
+            int red = color_sensor.red();
+            int green = color_sensor.green();
+            int blue = color_sensor.blue();
+            boolean isDefinitelyBlue = blue > 150 && blue > red * 1.5 && blue > green * 1.5;
+            boolean isDefinitelyRed = red > 150 && red > blue * 1.5 && red > green * 1.5;
+            boolean isDefinitelyGreen = green > 150 && green > red * 1.5 && green > blue * 1.5;
+            if(isDefinitelyBlue){
+                gamepad1.setLedColor(0,0,1,1000);
+            }
+            if(isDefinitelyRed){
+                gamepad1.setLedColor(1,0,0,1000);
+            }
+            if(isDefinitelyGreen){
+                gamepad1.setLedColor(0,1,0,1000);
+            }
+            if(isDefinitelyBlue){
+                gamepad2.setLedColor(0,0,1,1000);
+            }
+            if(isDefinitelyRed){
+                gamepad2.setLedColor(1,0,0,1000);
+            }
+            if(isDefinitelyGreen){
+                gamepad2.setLedColor(0,1,0,1000);
+            }
 
             if (isExtended){baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),2.5,true);}
             else{baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),1,true);}
