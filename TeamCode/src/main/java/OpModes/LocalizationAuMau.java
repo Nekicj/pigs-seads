@@ -188,22 +188,33 @@ public class LocalizationAuMau extends OpMode {
     public void autonomousPathUpdate() {
         switch (pathState) {
             case 0:
-                follower.followPath(Score, true);
-                actionsController.setOuttakeToBasket();
-                follower.setMaxPower(0.8);
-                break;
-
+                if (!follower.isBusy()) {
+                    follower.followPath(Score, true);
+                    actionsController.setOuttakeToBasket();
+                    follower.setMaxPower(0.8);
+                    setPathState(1);
+                    break;
+                }
             case 1:
-                follower.followPath(toSamp1);
-                follower.setMaxPower(0.8);
-                break;
+                if (!follower.isBusy()) {
+                    follower.followPath(toSamp1, true);
+                    follower.setMaxPower(0.8);
+                    setPathState(2);
+                    break;
+                }
             case 2:
-                actionsController.setIntakeToTakeAuto();
-                follower.setMaxPower(0.8);
+                if (!follower.isBusy()) {
+                    actionsController.setIntakeToTakeAuto();
+                    follower.setMaxPower(0.8);
+                    setPathState(3);
+                }
             case 3:
-                follower.followPath(Bomb1);
-                actionsController.setTransferNBusket();
-                follower.setMaxPower(0.8);
+                if (!follower.isBusy()) {
+                    follower.followPath(Bomb1, true);
+                    actionsController.setTransferNBusket();
+                    follower.setMaxPower(0.8);
+                    setPathState(4);
+                }
 //                if (!follower.isBusy()) {
 //                    if (stage4 == 0) {
 //                        follower.followPath(Score, true);
