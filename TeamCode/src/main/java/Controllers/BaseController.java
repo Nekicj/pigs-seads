@@ -47,15 +47,15 @@ public class BaseController {
         Lback.setRunMode(Motor.RunMode.VelocityControl);
         Rback.setRunMode(Motor.RunMode.VelocityControl);
 
-        Lfront.setFeedforwardCoefficients(kP,kI,kD);
-        Rfront.setFeedforwardCoefficients(kP,kI,kD);
-        Lback.setFeedforwardCoefficients(kP,kI,kD);
-        Rback.setFeedforwardCoefficients(kP,kI,kD);
-
-        Lfront.setVeloCoefficients(veloKP,veloKI,veloKD);
-        Rfront.setVeloCoefficients(veloKP,veloKI,veloKD);
-        Lback.setVeloCoefficients(veloKP,veloKI,veloKD);
-        Rback.setVeloCoefficients(veloKP,veloKI,veloKD);
+//        Lfront.setFeedforwardCoefficients(kP,kI,kD);
+//        Rfront.setFeedforwardCoefficients(kP,kI,kD);
+//        Lback.setFeedforwardCoefficients(kP,kI,kD);
+//        Rback.setFeedforwardCoefficients(kP,kI,kD);
+//
+//        Lfront.setVeloCoefficients(veloKP,veloKI,veloKD);
+//        Rfront.setVeloCoefficients(veloKP,veloKI,veloKD);
+//        Lback.setVeloCoefficients(veloKP,veloKI,veloKD);
+//        Rback.setVeloCoefficients(veloKP,veloKI,veloKD);
 
         //Lfront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
         //Rfront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
