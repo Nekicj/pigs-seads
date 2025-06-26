@@ -58,8 +58,8 @@ public class ActionsController {
         extendController.initialize(hardwareMap);
     }
 
-    public void update(){
-        liftController.update();
+    public void update(boolean isBack){
+        liftController.update(isBack);
         outtakeScheduler.update();
         intakeScheduler.update();
         transferSchedule.update();
@@ -336,7 +336,7 @@ public class ActionsController {
         if (toUp && liftTarget < LiftController.Position.MAX.getPos()){
             liftTarget += speed;
         }
-        else if(!toUp && liftTarget > 0){
+        else if(!toUp){
             liftTarget -= speed;
         }
 

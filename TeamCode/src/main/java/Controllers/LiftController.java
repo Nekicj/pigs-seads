@@ -29,7 +29,7 @@ public class LiftController {
         HOME(0),
         SPECIMEN_TAKE(0),
         SPECIMEN_PUSH(300),
-        MAX(610);  //650
+        MAX(630);  //650
 
         Position(int pos){
             this.position = pos;
@@ -71,15 +71,15 @@ public class LiftController {
     }
 
 
-    public  void update(){
-        update(0);
+    public  void update(boolean isBack){
+        update(0,isBack);
     }
-    public void update(double liftPower) {
+    public void update(double liftPower,boolean isBack) {
         double elapsedTime = elapsedTimer.milliseconds() / 1000.0;
         elapsedTimer.reset();
 
 
-        if (target < 0 && !gamepad2.back)
+        if (target < 0 && !isBack)
             target = 0;
         else if (target > Position.MAX.getPos())
             target = Position.MAX.getPos();

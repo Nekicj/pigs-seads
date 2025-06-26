@@ -76,7 +76,7 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
     private final Pose Samp3 = new Pose(62.48,9.1, 0);
     private final Pose CPto3 = new Pose(59.15, 18.97);
     private final Pose toHP2 = new Pose(20.2, 9.1, 0);
-    private final Pose toSpace = new Pose(43.3, 70, 0);
+    private final Pose toSpace = new Pose(43.8, 70, 0);
     private final Pose toSpaceCP = new Pose(28.5, 48.8, 0);
     //private final Pose pickyzone = new Pose(14, 33, 0);
 
@@ -396,7 +396,7 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
         follower.update();
         autonomousPathUpdate();
         Pose pose = follower.getPose();
-        actionsController.update();
+        actionsController.update(false);
 //        actionsController.update();
 
 //        if (pathState == 5) {

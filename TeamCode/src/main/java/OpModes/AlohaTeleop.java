@@ -32,10 +32,10 @@ public class AlohaTeleop extends LinearOpMode {
     private boolean isIntakeOpen = false;
     private RevColorSensorV3 color_sensor;
 
-    public static double liftChangeSpeed = 1;
+    public static double liftChangeSpeed = 3000;
 
     public double extendLenght = 0f;
-    public static double extendSpeed = 0.003;
+    public static double extendSpeed = 0.006;
 
 
     @Override
@@ -156,7 +156,7 @@ public class AlohaTeleop extends LinearOpMode {
                 actionsController.liftManual(true,liftChangeSpeed);}
 
             actionsController.setExtendTarget(extendLenght);
-            actionsController.update();
+            actionsController.update(gamepad2.back);
 
             telemetry.addData("Status", "Running");
             telemetry.addData("isTaken",isIntakeTaken);

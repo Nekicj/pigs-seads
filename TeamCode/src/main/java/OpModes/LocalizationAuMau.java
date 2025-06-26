@@ -319,7 +319,7 @@ public class LocalizationAuMau extends OpMode {
         follower.update();
         autonomousPathUpdate();
         Pose pose = follower.getPose();
-        actionsController.update();
+        actionsController.update(false);
 //        actionsController.update();
 
 //        if (pathState == 5) {

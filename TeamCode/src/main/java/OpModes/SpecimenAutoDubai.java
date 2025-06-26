@@ -402,7 +402,7 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
         follower.update();
         autonomousPathUpdate();
         Pose pose = follower.getPose();
-        actionsController.update();
+        actionsController.update(false);
 //        actionsController.update();
 
 //        if (pathState == 5) {
