@@ -70,17 +70,17 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
     private final Pose Samp1 = new Pose(67.2, 28, 0);
 
     private final Pose toHP = new Pose(21.2, 21.65, 0);
-    private final Pose Samp2 = new Pose(60.27, 14, 0);
+    private final Pose Samp2 = new Pose(60.27, 13.7, 0);
     private final Pose CPtoHP = new Pose(61, 18.75);
     private final Pose CPto2 = new Pose(58.7, 27.46);
     private final Pose Samp3 = new Pose(62.48,9.1, 0);
     private final Pose CPto3 = new Pose(59.15, 18.97);
     private final Pose toHP2 = new Pose(20.2, 7.59, 0);
-    private final Pose toSpace = new Pose(43.5, 70, 0);
+    private final Pose toSpace = new Pose(43.6, 70, 0);
     private final Pose toSpaceCP = new Pose(28.5, 48.8, 0);
     //private final Pose pickyzone = new Pose(14, 33, 0);
 
-    private final Pose PickPos = new Pose(9.25, 33, 0);
+    private final Pose PickPos = new Pose(9.415, 33, 0);
     private final Pose Spec2 = new Pose(7.8+12.91206598205746, 56.06+39.76907356578898, 0.022974112383540985);
 
     private Path Score, Park;
