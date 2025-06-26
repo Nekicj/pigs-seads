@@ -80,7 +80,7 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
     private final Pose toSpaceCP = new Pose(28.5, 48.8, 0);
     //private final Pose pickyzone = new Pose(14, 33, 0);
 
-    private final Pose PickPos = new Pose(9.415, 33, 0);
+    private final Pose PickPos = new Pose(9.35, 33, 0);
     private final Pose Spec2 = new Pose(7.8+12.91206598205746, 56.06+39.76907356578898, 0.022974112383540985);
 
     private Path Score, Park;
@@ -223,7 +223,7 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
             case 4:
                 if(!follower.isBusy()) {
                     follower.followPath(GrabToPick,true);
-                    follower.setMaxPower(0.8);
+                    follower.setMaxPower(0.9);
                     setPathState(5);
 
                 }
