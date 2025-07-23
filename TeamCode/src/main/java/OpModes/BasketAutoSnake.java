@@ -242,7 +242,7 @@ public class BasketAutoSnake extends OpMode {
         follower.update();
         autonomousPathUpdate();
         Pose pose = follower.getPose();
-        actionsController.update();
+        actionsController.update(false);
 
 //        if (pathState == 5) {
 //            takeAtSpec1.run(pose, Spec1, 2.0, 1.0, () -> {

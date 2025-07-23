@@ -9,8 +9,9 @@ public class ExtendController {
     private Servo extendArmLeft = null;
     private Servo extendArmRight = null;
 
+
     public static enum Positions{
-        EXTEND_MAX(0.27);
+        EXTEND_MAX(0.3);
 
 
 

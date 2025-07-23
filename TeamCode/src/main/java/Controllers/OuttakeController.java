@@ -11,23 +11,24 @@ public class OuttakeController {
     private Servo armLeft = null;
     private Servo armRight = null;
 
-    public static double CLAW_OPEN_V = 1;
-    public static double CLAW_CLOSE_V = 0;
-    public static double outtake_push_basket = 0.65;
+    public static double CLAW_OPEN_V = 0.17;
+    public static double CLAW_CLOSE_V = 0.55;
+    public static double outtake_push_basket = 0.5;
 
     public static enum Servos{
-        OUTTAKE_TAKE_SPECIMEN(0.92),
-        OUTTAKE_PUSH_SPECIMEN(0.22),
+        OUTTAKE_TAKE_SPECIMEN(0.81),
+        OUTTAKE_PUSH_SPECIMEN(0.1),
 
         OUTTAKE_PUSH_BASKET(outtake_push_basket),
+        OUTTAKE_ROTATE_BASKET(0.25),
 
         CLAW_OPEN(CLAW_OPEN_V),
         CLAW_CLOSE(CLAW_CLOSE_V),
 
-        CLAW_ROTATE_TAKE_SPECIMEN(0.95),
-        CLAW_ROTATE_PUSH_SPECIMEN(0.8),
+        CLAW_ROTATE_TAKE_SPECIMEN(0.17),
+        CLAW_ROTATE_PUSH_SPECIMEN(0.38),
 
-        CLAW_ROTATE_TRANSFER(0.69);
+        CLAW_ROTATE_TRANSFER(0.5);
 
 
 
@@ -57,6 +58,8 @@ public class OuttakeController {
 
         if (!isClawOpen) claw.setPosition(Servos.CLAW_CLOSE.getPos());
 
+        
+
     }
 
     public void setClawOpen(){
@@ -77,6 +80,16 @@ public class OuttakeController {
         armRight.setPosition(Servos.OUTTAKE_PUSH_SPECIMEN.getPos());
     }
 
+    public void setPwmArms(boolean isOn){
+        if (isOn){
+            armLeft.getController().pwmEnable();
+            armRight.getController().pwmEnable();
+        }else{
+            armLeft.getController().pwmDisable();
+            armRight.getController().pwmDisable();
+        }
+    }
+
     public void setClawRotateToTake(){
         clawRotate.setPosition(Servos.CLAW_ROTATE_TAKE_SPECIMEN.getPos());
     }
@@ -95,7 +108,7 @@ public class OuttakeController {
         armLeft.setPosition(Servos.OUTTAKE_PUSH_BASKET.getPos());
         armRight.setPosition(Servos.OUTTAKE_PUSH_BASKET.getPos());
 
-        clawRotate.setPosition(Servos.CLAW_ROTATE_PUSH_SPECIMEN.getPos());
+        clawRotate.setPosition(Servos.OUTTAKE_ROTATE_BASKET.getPos());
     }
 
 
