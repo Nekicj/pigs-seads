@@ -1,4 +1,4 @@
-package OpModes;
+package auto;
 
 import static java.lang.Math.abs;
 

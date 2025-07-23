@@ -1,5 +1,6 @@
-package OpModes;
+package auto;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.localization.Pose;
 import com.pedropathing.pathgen.BezierCurve;
@@ -14,18 +15,13 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import Controllers.ActionsController;
 import Controllers.OuttakeController;
 import auto.constants.FConstants;
 import auto.constants.LConstants;
-import Controllers.ActionsController;
-import Controllers.BaseController;
-import Controllers.ExtendController;
-import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
-
-@Autonomous(name = "BasketAutoDubai", group = "Competition")
-public class BasketAutoDubai extends OpMode {
+@Config
+@Autonomous(name = "LocalizationAuMau", group = "Competition")
+public class LocalizationAuMau extends OpMode {
 
     private Follower follower;
     private ActionsController actionsController;
@@ -69,17 +65,26 @@ public class BasketAutoDubai extends OpMode {
 //    private final Pose tohp2 = new Pose(19.5,13.94, 0);
 //    private final Pose way1to3 = new Pose(59.19, 7.7, 0 );
 //    private final Pose tohp3 = new Pose(19.5, 7.9, 0);
-    private final Pose startPose = new Pose(8.2, 102.2, Math.toRadians(0));  // Starting position
-    private final Pose BasketPos = new Pose(8.1, 136.5, Math.toRadians(-45));
-    private final Pose CPtoBas = new Pose(19.64, 111.62);
-    private final Pose Samp1 = new Pose(23.44, 120.78, 0);
+    public static double poses[][] = {
+            {8.2, 102.2, 0}, //startpose
+            {7.9, 140, -45}, //basketpos
+            {19.64, 111.62}, //cptobas
+            {23.44, 119.88, 45}, //samp1
+            {23.44, 131, 0}, //samp2
+            {62.48, 8.9, 0}, //sampe3
+            {10.2, 33, 0}, //park
+    };
 
-    private final Pose Samp2 = new Pose(60.27, 14, 0);
-    private final Pose Samp3 = new Pose(62.48,8.9, 0);
-    private final Pose Park = new Pose(10.2, 33, 0);
+    private final Pose startPose = new Pose(poses[0][0], poses[0][1], Math.toRadians(poses[0][2]));  // Starting position
+    private final Pose BasketPos = new Pose(poses[1][0], poses[1][1], Math.toRadians(poses[1][2]));
+    private final Pose CPtoBas = new Pose(poses[2][0], poses[2][1]); // Третья поза без угла
+    private final Pose Samp1 = new Pose(poses[3][0], poses[3][1], Math.toRadians(poses[3][2]));
+    private final Pose Samp2 = new Pose(poses[4][0], poses[4][1], Math.toRadians(poses[4][2]));
+    private final Pose Samp3 = new Pose(poses[5][0], poses[5][1], Math.toRadians(poses[5][2]));
+    private final Pose Park = new Pose(poses[6][0], poses[6][1], Math.toRadians(poses[6][2]));
 
     private Path Score;
-    private PathChain Bomb1, Bomb2, Bomb3, Bomb4, cars, toSamp1, toSamp2, toSamp3;
+    private PathChain Bomb1, Bomb2, Bomb3, Parking, toSamp1, toSamp2, toSamp3;
 
     public class DelayedAction {
         private ElapsedTime timer = new ElapsedTime();
@@ -172,7 +177,10 @@ public class BasketAutoDubai extends OpMode {
                 .setLinearHeadingInterpolation(Samp3.getHeading(), BasketPos.getHeading())
                 .build();
 
-
+        Parking = follower.pathBuilder()
+                .addPath(new BezierLine(new Point(BasketPos), new Point(Park)))
+                .setLinearHeadingInterpolation(BasketPos.getHeading(), Park.getHeading())
+                .build();
     }
 
 
@@ -180,120 +188,123 @@ public class BasketAutoDubai extends OpMode {
     public void autonomousPathUpdate() {
         switch (pathState) {
             case 0:
-
-                follower.followPath(Score);
-                follower.setMaxPower(0.8);
-                setPathState(1);
-                break;
+                if (!follower.isBusy()) {
+                    follower.followPath(Score, true);
+                    actionsController.setOuttakeToBasket();
+                    follower.setMaxPower(0.8);
+                    setPathState(1);
+                    break;
+                }
             case 1:
                 if (!follower.isBusy()) {
-                    if (stage4 == 0) {
-                        stageTimer.reset();
-                        stage4 = 1;
-                    }
-
-                    if (stage4 == 1 && stageTimer.seconds() >= 0.02) {
-                        actionsController.setOuttakeToBasket();
-                        follower.setMaxPower(0.7);
-                        stage4 = 2;
-                        stageTimer.reset();
-                    }
-
-                    if (stage4 == 2 && stageTimer.seconds() >= 2) {
-                        follower.followPath(toSamp1, true);
-                        hasTakenAtSpec1 = false;
-                        setPathState(2);
-                        stage4 = 0;
-                    }
+                    follower.followPath(toSamp1, true);
+                    follower.setMaxPower(0.8);
+                    setPathState(2);
+                    break;
                 }
-                break;
             case 2:
                 if (!follower.isBusy()) {
-                    if (stage4 == 0) {
-                        stageTimer.reset();
-                        stage4 = 1;
-                    }
-
-                    if (stage4 == 1 && stageTimer.seconds() >= 0.02) {
-                        actionsController.toIntakeTake();
-                        follower.setMaxPower(1);
-                        stage4 = 2;
-                        stageTimer.reset();
-                    }
-
-                    if (stage4 == 2 && stageTimer.seconds() >= 0.06) {
-                        follower.followPath(Bomb1, true);
-
-                        hasTakenAtSpec1 = false;
-                        setPathState(3);
-                        stage4 = 0;
-                    }
+                    actionsController.setIntakeToTakeAuto();
+                    follower.setMaxPower(0.8);
+                    setPathState(3);
                 }
-                break;
-//            case 3:
-//                if(!follower.isBusy()) {
-//                    follower.followPath(toSamp2,true);
-//                    follower.setMaxPower(0.8);
-//                    setPathState(4);
+            case 3:
+                if (!follower.isBusy()) {
+                    follower.followPath(Bomb1, true);
+                    actionsController.setTransferNBusket();
+                    follower.setMaxPower(0.8);
+                    setPathState(4);
+                }
+//                if (!follower.isBusy()) {
+//                    if (stage4 == 0) {
+//                        follower.followPath(Score, true);
+//                        actionsController.setOuttakeToBasket();
+//                        follower.setMaxPower(0.8);
+//                        stageTimer.reset();
+//                        stage4 = 1;
+//                    }
 //
+//                    if (stage4 == 1 && stageTimer.seconds() >= 4) {
+//                        follower.followPath(toSamp1, true);
+//                        stage4 = 0;
+//                        stageTimer.reset();
+//                    }
+//                    if (stage4 == 2 && stageTimer.seconds() >= 1) { //1 sample
+//                        actionsController.setIntakeToTakeAuto();
+//                        hasTakenAtSpec1 = false;
+//                        setPathState(1);
+//                        stage4 = 0;
+//                    }
 //                }
 //                break;
-//            case 4:
-//                if (!follower.isBusy()) {
+//            case 1:
+//                if (!follower.isBusy()) { //
 //                    if (stage5 == 0) {
-//                        stageTimer5.reset();
+//                        stageTimer.reset();
 //                        stage5 = 1;
 //                    }
 //
-//                    if (stage5 == 1 && stageTimer5.seconds() >= 0.02) {
-//                        actionsController.setClaws(true);
-//                        follower.setMaxPower(1);
+//                    if (stage5 == 1 && stageTimer5.seconds() >= 4) { //score 1
+//                        follower.followPath(Bomb1, true);
+//                        actionsController.setOuttakeToBasket();
+//                        follower.setMaxPower(0.8);
 //                        stage5 = 2;
-//                        stageTimer5.reset();
+//                        stageTimer.reset();
 //                    }
 //
-//                    if (stage5 == 2 && stageTimer5.seconds() >= 0.06) {
-//                        follower.followPath(Bomb2, true);
-//                        actionsController.toPushSpecimen();
+//                    if (stage5 == 2 && stageTimer5.seconds() >= 4) {
+//                        follower.followPath(toSamp2, true);
+//                        actionsController.setIntakeToTakeAuto();
 //                        hasTakenAtSpec1 = false;
-//                        setPathState(10);
+//                        setPathState(2);
 //                        stage5 = 0;
 //                    }
 //                }
 //                break;
-//            case 5:
-//                if(!follower.isBusy()) {
-//                    follower.followPath(toSamp3,true);
-//                    follower.setMaxPower(0.9);
-//                    setPathState(6);
-//
-//                }
-//                break;
-//            case 6:
+//            case 2:
 //                if (!follower.isBusy()) {
 //                    if (stage6 == 0) {
 //                        stageTimer.reset();
 //                        stage6 = 1;
 //                    }
 //
-//                    if (stage6 == 1 && stageTimer.seconds() >= 0.02) {
-//                        actionsController.setClaws(true);
-//                        follower.setMaxPower(1);
+//                    if (stage6 == 1 && stageTimer6.seconds() >= 3) {
+//                        follower.followPath(Bomb2, true);
+//                        actionsController.setOuttakeToBasket();
+//                        follower.setMaxPower(0.8);
 //                        stage6 = 2;
 //                        stageTimer.reset();
 //                    }
 //
-//                    if (stage6 == 2 && stageTimer.seconds() >= 0.06) {
-//                        follower.followPath(Bomb3, true);
-//                        actionsController.toPushSpecimen();
+//                    if (stage6 == 2 && stageTimer6.seconds() >= 4) {
+//                        follower.followPath(toSamp3, true);
+//                        actionsController.setIntakeToTakeAuto();
 //                        hasTakenAtSpec1 = false;
-//                        setPathState(7);
+//                        setPathState(3);
 //                        stage6 = 0;
 //                    }
 //                }
 //                break;
-
-
+//            case 3:
+//                if (!follower.isBusy()) {
+//                    if (stage7 == 0) {
+//                        stageTimer.reset();
+//                        stage7 = 1;
+//                    }
+//
+//                    if (stage7 == 1 && stageTimer7.seconds() >= 3) {
+//                        follower.followPath(Bomb3, true);
+//                        actionsController.setOuttakeToBasket();
+//                        follower.setMaxPower(0.8);
+//                        stage7 = 2;
+//                        stageTimer.reset();
+//                    }
+//
+//                    if (stage7 == 2 && stageTimer7.seconds() >= 3) {
+//                        follower.followPath(Parking);
+//                        stage7 = 0;
+//                        hasTakenAtSpec1 = false;
+//                    }
         }
     }
 
