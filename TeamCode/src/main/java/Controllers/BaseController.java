@@ -1,0 +1,90 @@
+package Controllers;
+
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.gamepad1;
+
+import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.drivebase.MecanumDrive;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.pedropathing.localization.GoBildaPinpointDriver;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDCoefficients;
+
+@Config
+public class BaseController {
+    public static double veloKP = 0.05;
+    public static double veloKI = 0.01;
+    public static double veloKD = 0.09;
+
+    public static double kP = 0.93;
+    public static double kI = 0.47;
+    public static double kD = 0.05;
+
+    Motor Lfront = null;
+    Motor Rfront = null;
+    Motor Rback = null;
+    Motor Lback = null;
+
+    GoBildaPinpointDriver odo = null;
+
+
+    MecanumDrive drive;
+
+
+    public void initialize(HardwareMap hardwareMap){
+        Lfront = new Motor(hardwareMap,"LFront",Motor.GoBILDA.RPM_435);
+        Rfront = new Motor(hardwareMap,"RFront",Motor.GoBILDA.RPM_435);
+        Lback = new Motor(hardwareMap,"LBack",Motor.GoBILDA.RPM_435);
+        Rback = new Motor(hardwareMap,"RBack",Motor.GoBILDA.RPM_435);
+
+        Lfront.setInverted(true );
+        Lback.setInverted(true);
+        Rback.setInverted(true);
+        Rfront.setInverted(true);
+
+        Lfront.setRunMode(Motor.RunMode.VelocityControl);
+        Rfront.setRunMode(Motor.RunMode.VelocityControl);
+        Lback.setRunMode(Motor.RunMode.VelocityControl);
+        Rback.setRunMode(Motor.RunMode.VelocityControl);
+
+//        Lfront.setFeedforwardCoefficients(kP,kI,kD);
+//        Rfront.setFeedforwardCoefficients(kP,kI,kD);
+//        Lback.setFeedforwardCoefficients(kP,kI,kD);
+//        Rback.setFeedforwardCoefficients(kP,kI,kD);
+//
+//        Lfront.setVeloCoefficients(veloKP,veloKI,veloKD);
+//        Rfront.setVeloCoefficients(veloKP,veloKI,veloKD);
+//        Lback.setVeloCoefficients(veloKP,veloKI,veloKD);
+//        Rback.setVeloCoefficients(veloKP,veloKI,veloKD);
+
+        //Lfront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        //Rfront.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        //Lback.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+        //Rback.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+
+        drive = new MecanumDrive(
+                Lfront,
+                Rfront,
+                Lback,
+                Rback
+        );
+
+
+
+        odo = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+        odo.recalibrateIMU();
+        odo.resetPosAndIMU();
+    }
+
+    public void update(double leftX,double leftY,double rightX, double turnCoeff,boolean squareInput){
+        odo.update(GoBildaPinpointDriver.readData.ONLY_UPDATE_HEADING);
+
+        drive.driveFieldCentric(
+                leftX,
+                leftY,
+                rightX /turnCoeff,
+                Math.toDegrees(odo.getHeading()),
+                squareInput
+        );
+    }
+}
