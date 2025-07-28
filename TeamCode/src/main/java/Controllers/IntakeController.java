@@ -9,8 +9,8 @@ import com.qualcomm.robotcore.util.Range;
 public class IntakeController {
     private Servo intakeClaw = null;
     private Servo clawRotate = null;
-    private Servo intakeRotate = null;
-    private Servo intakeArm = null;
+    private Servo rightIntakeArm = null;
+    private Servo leftIntakeArm = null;
     private Servo intakeKrutilka = null;
 
     public static double INTAKE_ARM_TRANSFER_A = 0.44; // 0.4
@@ -32,21 +32,18 @@ public class IntakeController {
     };
 
     public static enum Servos{
-        CLAW_OPEN(0.53),
-        CLAW_CLOSE(0.483),
+        CLAW_OPEN(0.545),
+        CLAW_CLOSE(0.498),
 
-        INTAKE_ARM_AIM(0.2),
-        INTAKE_KRUTILKA_AIM(0.91),
+        INTAKE_ARM_AIM(0.22),
 
-        INTAKE_ARM_TAKE(0.13),
-        INTAKE_KRUTILKA_TAKE(0.94),
+        INTAKE_ARM_TAKE(0.15),
 
-        INTAKE_ARM_TRANSFER(INTAKE_ARM_TRANSFER_A),
-        INTAKE_KRUTILKA_TRANSFER(INTAKE_KRUTILKA_TRANSFER_A),
+        INTAKE_ARM_TRANSFER(0.64),
 
         INTAKE_ARM_LOW(0.3),
 
-        INTAKE_ROTATE_MIDDLE(0.493),
+        INTAKE_KRUTILKA_MIDDLE(0.475),
 
         INTAKE_CLAW_ROTATE_1(1),
         INTAKE_CLAW_ROTATE_2(0.82),
@@ -57,7 +54,6 @@ public class IntakeController {
         INTAKE_CLAW_ROTATE_7(0),
 
         INTAKE_ARM_TEHNOZ(0.18),
-        INTAKE_ROTATE_TEHNOZ(0.7),
         INTAKE_KRUTILKA_TEHNOZ(0.2),
         INTAKE_CLAW_ROTATE_TEHNOZ(0.16);
 
@@ -70,16 +66,19 @@ public class IntakeController {
 
     }
 
-    public void initialize(HardwareMap hardwareMap,String clawServoName,String clawRotateName,String intakeRotateName,String intakeArmName,String intakeKrutilkaName){
-        initialize(hardwareMap,clawServoName, clawRotateName,intakeRotateName,intakeArmName,intakeKrutilkaName,false);
+    public void initialize(HardwareMap hardwareMap,String clawServoName,String clawRotateName,String RightintakeArmName,String LeftintakeArmName,String intakeKrutilkaName){
+        initialize(hardwareMap,clawServoName, clawRotateName,RightintakeArmName,LeftintakeArmName,intakeKrutilkaName,false);
     }
 
-    public void initialize(HardwareMap hardwareMap,String clawServoName, String clawRotateName,String intakeRotateName,String intakeArmName,String intakeKrutilkaName,boolean isClawOpen){
+    public void initialize(HardwareMap hardwareMap,String clawServoName, String clawRotateName,String RightintakeArmName,String LeftintakeArmName,String intakeKrutilkaName,boolean isClawOpen){
         intakeClaw = hardwareMap.get(Servo.class,clawServoName);
         clawRotate = hardwareMap.get(Servo.class,clawRotateName);
-        intakeRotate = hardwareMap.get(Servo.class,intakeRotateName);
-        intakeArm =  hardwareMap.get(Servo.class,intakeArmName);
+        rightIntakeArm = hardwareMap.get(Servo.class,RightintakeArmName);
+        leftIntakeArm =  hardwareMap.get(Servo.class,LeftintakeArmName);
         intakeKrutilka = hardwareMap.get(Servo.class,intakeKrutilkaName);
+
+        leftIntakeArm.setDirection(Servo.Direction.FORWARD);
+        rightIntakeArm.setDirection(Servo.Direction.REVERSE);
 
         clawRotate.setPosition(Servos.INTAKE_CLAW_ROTATE_4.getPos());
 
@@ -96,31 +95,31 @@ public class IntakeController {
     }
 
     public void setTehnoZ(){
-        safeSetPosition(intakeArm,Servos.INTAKE_ARM_TEHNOZ.getPos());
-        safeSetPosition(intakeRotate,Servos.INTAKE_ROTATE_TEHNOZ.getPos());
+        safeSetPosition(leftIntakeArm,Servos.INTAKE_ARM_TEHNOZ.getPos());
+
         safeSetPosition(intakeKrutilka,Servos.INTAKE_KRUTILKA_TEHNOZ.getPos());
         safeSetPosition(clawRotate,Servos.INTAKE_CLAW_ROTATE_TEHNOZ.getPos());
     }
 
     public void setIntakeAim(){
-        safeSetPosition(intakeArm,Servos.INTAKE_ARM_AIM.getPos());
-        safeSetPosition(intakeRotate,Servos.INTAKE_KRUTILKA_AIM.getPos());
-        safeSetPosition(intakeKrutilka,Servos.INTAKE_ROTATE_MIDDLE.getPos());}
+        safeSetPosition(leftIntakeArm,Servos.INTAKE_ARM_AIM.getPos());
+        safeSetPosition(rightIntakeArm,Servos.INTAKE_ARM_AIM.getPos());
+
+        safeSetPosition(intakeKrutilka,Servos.INTAKE_KRUTILKA_MIDDLE.getPos());}
 
 
     public void setIntakeTake(){
-        safeSetPosition(intakeArm,Servos.INTAKE_ARM_TAKE.getPos());
-        safeSetPosition(intakeRotate,Servos.INTAKE_KRUTILKA_TAKE.getPos());}
+        safeSetPosition(leftIntakeArm,Servos.INTAKE_ARM_TAKE.getPos());}
 
     public void setIntakeToTransfer(){
-        safeSetPosition(intakeArm,Servos.INTAKE_ARM_TRANSFER.getPos());
-        safeSetPosition(intakeRotate,Servos.INTAKE_KRUTILKA_TRANSFER.getPos());
-        safeSetPosition(intakeKrutilka,Servos.INTAKE_ROTATE_MIDDLE.getPos());}
+        safeSetPosition(leftIntakeArm,Servos.INTAKE_ARM_TRANSFER.getPos());
+        safeSetPosition(rightIntakeArm,Servos.INTAKE_ARM_TRANSFER.getPos());
+        safeSetPosition(intakeKrutilka,Servos.INTAKE_KRUTILKA_MIDDLE.getPos());}
 
     public void setIntakeToLow(){
-        safeSetPosition(intakeArm,Servos.INTAKE_ARM_LOW.getPos());
-        safeSetPosition(intakeRotate,Servos.INTAKE_KRUTILKA_TRANSFER.getPos());
-        safeSetPosition(intakeKrutilka,Servos.INTAKE_ROTATE_MIDDLE.getPos());}
+        safeSetPosition(leftIntakeArm,Servos.INTAKE_ARM_LOW.getPos());
+        safeSetPosition(rightIntakeArm,Servos.INTAKE_ARM_LOW.getPos());
+        safeSetPosition(intakeKrutilka,Servos.INTAKE_KRUTILKA_MIDDLE.getPos());}
 
     public void intakeRotateControl(double left_trigger,double right_trigger){
         intakeRotatePos += left_trigger * rotateIntakeSpeed;
@@ -156,6 +155,6 @@ public class IntakeController {
     public void setIntakeClawPosition(double position){safeSetPosition(intakeClaw,position);}
     public void setClawRotatePosition(double position){safeSetPosition(clawRotate,position);}
     public double getIntakeRotatePos(){return intakeRotatePos;}
-    public void setIntakeRotatePos(double position){safeSetPosition(intakeRotate,position);}
+    public void setIntakeRotatePos(double position){safeSetPosition(rightIntakeArm,position);}
 
 }

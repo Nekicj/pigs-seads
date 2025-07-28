@@ -11,13 +11,13 @@ public class OuttakeController {
     private Servo armLeft = null;
     private Servo armRight = null;
 
-    public static double CLAW_OPEN_V = 0.17;
-    public static double CLAW_CLOSE_V = 0.55;
+    public static double CLAW_OPEN_V = 0.4;
+    public static double CLAW_CLOSE_V = 0.6;
     public static double outtake_push_basket = 0.5;
 
     public static enum Servos{
-        OUTTAKE_TAKE_SPECIMEN(0.81),
-        OUTTAKE_PUSH_SPECIMEN(0.1),
+        OUTTAKE_TAKE_SPECIMEN(0.3),
+        OUTTAKE_PUSH_SPECIMEN(1),
 
         OUTTAKE_PUSH_BASKET(outtake_push_basket),
         OUTTAKE_ROTATE_BASKET(0.25),
@@ -25,10 +25,11 @@ public class OuttakeController {
         CLAW_OPEN(CLAW_OPEN_V),
         CLAW_CLOSE(CLAW_CLOSE_V),
 
-        CLAW_ROTATE_TAKE_SPECIMEN(0.17),
-        CLAW_ROTATE_PUSH_SPECIMEN(0.38),
+        CLAW_ROTATE_TAKE_SPECIMEN(0.1),
+        CLAW_ROTATE_PUSH_SPECIMEN(0.4),
 
-        CLAW_ROTATE_TRANSFER(0.5);
+        CLAW_ROTATE_TRANSFER(0.8),
+        OUTTAKE_ARM_TRANSFER(0.82);
 
 
 
@@ -99,8 +100,8 @@ public class OuttakeController {
     }
 
     public void setOuttakeToTransfer(){
-        armLeft.setPosition(Servos.OUTTAKE_PUSH_SPECIMEN.getPos());
-        armRight.setPosition(Servos.OUTTAKE_PUSH_SPECIMEN.getPos());
+        armLeft.setPosition(Servos.OUTTAKE_ARM_TRANSFER.getPos());
+        armRight.setPosition(Servos.OUTTAKE_ARM_TRANSFER.getPos());
         clawRotate.setPosition(Servos.CLAW_ROTATE_TRANSFER.getPos());
     }
 

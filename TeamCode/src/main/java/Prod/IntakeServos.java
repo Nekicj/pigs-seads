@@ -7,11 +7,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.R;
+
 @Config
 @TeleOp(name="Intake Servos",group="Prod")
 public class IntakeServos extends LinearOpMode {
-    private Servo servoArm = null;
-    private Servo servoIntakeRotate = null;
+    private Servo leftServoArm = null;
+    private Servo rightServoArm = null;
 
     private Servo servoIntakeClaw = null;
     private Servo servoClawRotate = null;
@@ -33,11 +35,15 @@ public class IntakeServos extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        servoArm = hardwareMap.get(Servo.class, "IntakeArm");
+        leftServoArm = hardwareMap.get(Servo.class, "LeftIntakeArm");
+        rightServoArm = hardwareMap.get(Servo.class, "RightIntakeArm");
+
+        leftServoArm.setDirection(Servo.Direction.FORWARD);
+        rightServoArm.setDirection(Servo.Direction.REVERSE);
+
         servoClawRotate= hardwareMap.get(Servo.class, "IntakeClawRotate");
 
         servoIntakeClaw = hardwareMap.get(Servo.class,"IntakeClaw");
-        servoIntakeRotate = hardwareMap.get(Servo.class,"IntakeRotate");
 
         servoKrutilka = hardwareMap.get(Servo.class,"IntakeKrutilka");
 
@@ -48,16 +54,13 @@ public class IntakeServos extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()){
             if (driver1.wasJustPressed(GamepadKeys.Button.B)){
-                servoArm.setPosition(servoArmPose);
+                leftServoArm.setPosition(servoArmPose);
+                rightServoArm.setPosition(servoArmPose);
                 servoIntakeClaw.setPosition(servoClawPose);
             }
 
             if (driver1.wasJustPressed(GamepadKeys.Button.X)){
                 servoClawRotate.setPosition(servoClawRotatePose);
-            }
-
-            if (driver1.wasJustPressed(GamepadKeys.Button.Y)){
-                servoIntakeRotate.setPosition(servoIntakeRotatePose);
             }
 
             if (driver1.wasJustPressed(GamepadKeys.Button.A)){

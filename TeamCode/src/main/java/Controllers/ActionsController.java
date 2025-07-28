@@ -50,8 +50,8 @@ public class ActionsController {
         intakeController.initialize(hardwareMap,
                 "IntakeClaw",
                 "IntakeClawRotate",
-                "IntakeRotate",
-                "IntakeArm",
+                "RightIntakeArm",
+                "LeftIntakeArm",
                 "IntakeKrutilka");
 
 
@@ -60,6 +60,7 @@ public class ActionsController {
 
     public void update(boolean isBack){
         liftController.update(isBack);
+        extendController.update(isBack);
         outtakeScheduler.update();
         intakeScheduler.update();
         transferSchedule.update();
@@ -97,21 +98,6 @@ public class ActionsController {
         liftController.setTargetPosition(target);
     }
 
-    public void setClawOpenNToTakeSpecimen(){
-        outtakeScheduler.clearQueue();
-        outtakeScheduler.setAutoReset(false);
-
-        outtakeScheduler.scheduleCommand(outtakeController::setClawOpen);
-
-        outtakeScheduler.scheduleDelay(0.7);
-        outtakeScheduler.scheduleCommand(outtakeController::setClawOpen);
-
-        outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToTake);
-        outtakeScheduler.scheduleCommand(outtakeController::setClawRotateToTake);
-        outtakeScheduler.scheduleCommand(()->liftController.setTargetPosition(LiftController.Position.SPECIMEN_TAKE.getPos()));
-
-        outtakeScheduler.start();
-    }
 
     public void toIntakeAim(){
         intakeScheduler.clearQueue();
@@ -163,17 +149,6 @@ public class ActionsController {
 
 
         intakeScheduler.start();
-    }
-
-    public void setTransfer(){
-        transferSchedule.clearQueue();
-        transferSchedule.setAutoReset(false);
-
-        transferSchedule.scheduleCommand(outtakeController::setOuttakeToTransfer);
-        transferSchedule.scheduleCommand(outtakeController::setClawOpen);
-        transferSchedule.scheduleCommand(() -> liftController.setTargetPosition(0));
-
-        transferSchedule.start();
     }
 
     public void setTransferNBusket(){
@@ -309,6 +284,10 @@ public class ActionsController {
             intakeController.setClawClose();
         }
     }
+
+//    public void setUpGear(boolean isUp){
+//        liftController.setUpGear(isUp);
+//    }
 
     public void setExtendTarget(double target){
         extendController.setTargetPosition(target);

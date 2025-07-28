@@ -1,48 +1,80 @@
 package Controllers;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.arcrobotics.ftclib.controller.PIDController;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Config
 public class ExtendController {
-    private Servo extendArmLeft = null;
-    private Servo extendArmRight = null;
+    private Motor extendoLift = null;
+
+    public static double kP = 0.02;
+    public static double kD = 0;
+    public static double kI = 0.001;
+    PIDController leftLiftPidController = new PIDController(kP, kI, kD);
 
 
-    public static enum Positions{
-        EXTEND_MAX(0.3);
 
+    public enum Positions{
+        HOME(0),
+        EXTENDED(180),
+        EXTEND_MAX(390);  //650
 
+        Positions(int pos){
+            this.position = pos;
+        }
+        private int position;
 
-
-        private final double position;
-        Positions(double pos) {this.position = pos;}
-
-
-        public double getPos() {return position;}
+        public double getPos() {
+            return position;
+        }
 
     }
+
+    public static double target = 0;
+    public static double liftTargetChangeSpeed = 3000;
+    public static double tolerance = 20;
+    ElapsedTime elapsedTimer = new ElapsedTime();
 
 
     public void initialize(HardwareMap hardwareMap){
-        extendArmLeft = hardwareMap.get(Servo.class,"Lkuz");
-        extendArmRight = hardwareMap.get(Servo.class,"RKus");
+        extendoLift = new Motor(hardwareMap,"ExtendoMotor");
 
-        extendArmLeft.setDirection(Servo.Direction.FORWARD);
-        extendArmRight.setDirection(Servo.Direction.REVERSE);
+        extendoLift.setInverted(true);
+
+        extendoLift.setRunMode(Motor.RunMode.RawPower);
+
+        extendoLift.resetEncoder();
+
+        elapsedTimer.reset();
 
     }
 
-    public void setTargetPosition(double target){
-        if(target <=Positions.EXTEND_MAX.getPos()){
-            extendArmRight.setPosition(target);
-            extendArmLeft.setPosition(target);
-        }
-        else{
+    public  void update(boolean isBack){
+        update(0,isBack);
+    }
+    public void update(double liftPower,boolean isBack) {
+        double elapsedTime = elapsedTimer.milliseconds() / 1000.0;
+        elapsedTimer.reset();
 
-            extendArmRight.setPosition(Positions.EXTEND_MAX.getPos());
-            extendArmLeft.setPosition(Positions.EXTEND_MAX.getPos());
-        }
+
+        if (target < 0 && !isBack)
+            target = 0;
+        else if (target > Positions.EXTEND_MAX.getPos()){
+            target = Positions.EXTEND_MAX.getPos();}
+
+
+        target += elapsedTime * liftPower * liftTargetChangeSpeed;
+
+        double leftLiftCurrent = extendoLift.getCurrentPosition();
+        double leftLiftPower = leftLiftPidController.calculate(leftLiftCurrent, target);
+
+        extendoLift.set(-leftLiftPower);
+    }
+
+    public void setTargetPosition(double setTarget){
+        target = setTarget;
     }
 }

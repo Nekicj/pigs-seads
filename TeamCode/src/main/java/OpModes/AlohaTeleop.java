@@ -30,12 +30,11 @@ public class AlohaTeleop extends LinearOpMode {
     private boolean isIntakeTaken = false;
     private boolean isExtended = false;
     private boolean isIntakeOpen = false;
-    private RevColorSensorV3 color_sensor;
 
     public static double liftChangeSpeed = 3000;
 
     public double extendLenght = 0f;
-    public static double extendSpeed = 0.006;
+    public static double extendSpeed = 20;
 
 
     @Override
@@ -47,37 +46,12 @@ public class AlohaTeleop extends LinearOpMode {
         actionsController = new ActionsController(hardwareMap);
         baseController = new BaseController();
         baseController.initialize(hardwareMap);
-        color_sensor = hardwareMap.get(RevColorSensorV3.class, "color_sensor");
+
 
         telemetry.addData("Status, ","Initialized");
         waitForStart();
 
         while (opModeIsActive()){
-
-            int red = color_sensor.red();
-            int green = color_sensor.green();
-            int blue = color_sensor.blue();
-            boolean isDefinitelyBlue = blue > 150 && blue > red * 1.5 && blue > green * 1.5;
-            boolean isDefinitelyRed = red > 150 && red > blue * 1.5 && red > green * 1.5;
-            boolean isDefinitelyGreen = green > 150 && green > red * 1.5 && green > blue * 1.5;
-            if(isDefinitelyBlue){
-                gamepad1.setLedColor(0,0,1,10);
-            }
-            if(isDefinitelyRed){
-                gamepad1.setLedColor(1,0,0,10);
-            }
-            if(isDefinitelyGreen){
-                gamepad1.setLedColor(0,1,0,10);
-            }
-            if(isDefinitelyBlue){
-                gamepad2.setLedColor(0,0,1,1000);
-            }
-            if(isDefinitelyRed){
-                gamepad2.setLedColor(1,0,0,1000);
-            }
-            if(isDefinitelyGreen){
-                gamepad2.setLedColor(0,1,0,1000);
-            }
 
             if (isExtended){baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),2.5,true);}
             else{baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),1,true);}

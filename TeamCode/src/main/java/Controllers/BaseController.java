@@ -32,10 +32,10 @@ public class BaseController {
 
 
     public void initialize(HardwareMap hardwareMap){
-        Lfront = new Motor(hardwareMap,"leftFront",Motor.GoBILDA.RPM_435);
-        Rfront = new Motor(hardwareMap,"rightFront",Motor.GoBILDA.RPM_435);
-        Lback = new Motor(hardwareMap,"leftBack",Motor.GoBILDA.RPM_435);
-        Rback = new Motor(hardwareMap,"rightBack",Motor.GoBILDA.RPM_435);
+        Lfront = new Motor(hardwareMap,"LFront",Motor.GoBILDA.RPM_435);
+        Rfront = new Motor(hardwareMap,"RFront",Motor.GoBILDA.RPM_435);
+        Lback = new Motor(hardwareMap,"LBack",Motor.GoBILDA.RPM_435);
+        Rback = new Motor(hardwareMap,"RBack",Motor.GoBILDA.RPM_435);
 
         Lfront.setInverted(true );
         Lback.setInverted(true);

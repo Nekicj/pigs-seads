@@ -10,8 +10,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Config
 @TeleOp(name="Transfer Servos",group="Prod")
 public class TransferServos extends LinearOpMode {
-    private Servo servoIntakeRotate = null;
-    private Servo servoIntakeArm = null;
+
+    private Servo leftservoIntakeArm = null;
+    private Servo rightservoIntakeArm = null;
 
     private Servo servoArmLeft = null;
     private Servo servoArmRight = null;
@@ -23,7 +24,6 @@ public class TransferServos extends LinearOpMode {
 
 
     public static double servoIntakeArmPose = 0.5;
-    public static double servoIntakeRotatePose = 0.5;
 
     public static double servoOuttakeArmPose = 0.5;
     public static double servoOuttakeRotatePose = 0.5;
@@ -36,8 +36,11 @@ public class TransferServos extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
-        servoIntakeRotate = hardwareMap.get(Servo.class,"IntakeRotate");
-        servoIntakeArm = hardwareMap.get(Servo.class,"IntakeArm");
+        leftservoIntakeArm = hardwareMap.get(Servo.class,"LeftIntakeArm");
+        rightservoIntakeArm = hardwareMap.get(Servo.class,"RightIntakeArm");
+
+        leftservoIntakeArm.setDirection(Servo.Direction.FORWARD);
+        rightservoIntakeArm.setDirection(Servo.Direction.REVERSE);
 
         servoArmLeft = hardwareMap.get(Servo.class,"OuttakeArmLeft");
         servoArmRight = hardwareMap.get(Servo.class,"OuttakeArmRight");
@@ -57,8 +60,9 @@ public class TransferServos extends LinearOpMode {
         while (opModeIsActive()){
             intakeRotate.setPosition(0.5);
             if (driver1.wasJustPressed(GamepadKeys.Button.B)){
-                servoIntakeRotate.setPosition(servoIntakeRotatePose);
-                servoIntakeArm.setPosition(servoIntakeArmPose);
+                rightservoIntakeArm.setPosition(servoIntakeArmPose);
+
+                leftservoIntakeArm.setPosition(servoIntakeArmPose);
             }
 
             if (driver1.wasJustPressed(GamepadKeys.Button.X)){

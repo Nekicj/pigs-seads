@@ -7,6 +7,7 @@ import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -17,9 +18,15 @@ public class LiftController {
     private Motor leftLift = null;
     private Motor rightLift = null;
 
-    public static double kP = 0.02;
+//    private Servo gearSwitcher = null;
+//
+//    private Servo leftKozel = null;
+//    private Servo rightKozel = null;
+
+    public static double kP = 0.0055;
     public static double kD = 0;
-    public static double kI = 0.001;
+    public static double kI = 0;
+
     PIDController leftLiftPidController = new PIDController(kP, kI, kD);
     PIDController rightLiftPidController = new PIDController(kP, kI , kD);
 
@@ -29,7 +36,8 @@ public class LiftController {
         HOME(0),
         SPECIMEN_TAKE(0),
         SPECIMEN_PUSH(300),
-        MAX(630);  //650
+        MAX(750),
+        HANG_MAX(2130);//650
 
         Position(int pos){
             this.position = pos;
@@ -42,7 +50,22 @@ public class LiftController {
 
     }
 
-    public static double target = Position.SPECIMEN_PUSH.getPos() - 10;
+    public enum SwitcherPositions{
+        UP_GEAR(0.4),
+        DOWN_GEAR(0.6);
+
+        SwitcherPositions(double pos){
+            this.position = pos;
+        }
+        private double position;
+
+        public double getPos() {
+            return position;
+        }
+
+    }
+
+    public static double target = 0;
     public static double liftTargetChangeSpeed = 3000;
     public static double tolerance = 20;
     ElapsedTime elapsedTimer = new ElapsedTime();
@@ -52,9 +75,15 @@ public class LiftController {
     public void initialize(HardwareMap hardwareMap) {
         leftLift = new Motor(hardwareMap, "Llift");
         rightLift = new Motor(hardwareMap, "Rlift");
+//        leftKozel = hardwareMap.get(Servo.class,"leftKozel");
+//        rightKozel = hardwareMap.get(Servo.class,"rightKozel");
+//        gearSwitcher = hardwareMap.get(Servo.class,"gearSwitcher");
+//
+//        leftKozel.setDirection(Servo.Direction.F\ORWARD);
+//        rightKozel.setDirection(Servo.Direction.REVERSE);
 
-        leftLift.setInverted(false);
-        rightLift.setInverted(true);
+        leftLift.setInverted(true);
+        rightLift.setInverted(false);
 
         leftLift.setRunMode(Motor.RunMode.RawPower);
         rightLift.setRunMode(Motor.RunMode.RawPower);
@@ -68,12 +97,14 @@ public class LiftController {
         //rightLift.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
         elapsedTimer.reset();
+//        setUpGear(true);
     }
 
 
     public  void update(boolean isBack){
         update(0,isBack);
     }
+
     public void update(double liftPower,boolean isBack) {
         double elapsedTime = elapsedTimer.milliseconds() / 1000.0;
         elapsedTimer.reset();
@@ -96,6 +127,18 @@ public class LiftController {
         leftLift.set(-leftLiftPower);
         rightLift.set(rightLiftPower);
     }
+
+//    public void setUpGear(boolean setUp){
+//        if (setUp){
+//            gearSwitcher.setPosition(SwitcherPositions.UP_GEAR.getPos());
+//        }else{
+//            gearSwitcher.setPosition(SwitcherPositions.DOWN_GEAR.getPos());
+//        }
+//    }
+
+//    public void setKozelPower(double power){
+//        leftKozel.setPosition(power);
+//    }
 
     public void setTargetPosition(double targetPosition){
         target = targetPosition;
