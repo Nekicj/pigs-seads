@@ -13,14 +13,14 @@ public class OuttakeController {
 
     public static double CLAW_OPEN_V = 0.4;
     public static double CLAW_CLOSE_V = 0.6;
-    public static double outtake_push_basket = 0.5;
+    public static double outtake_push_basket = 0.4;
 
     public static enum Servos{
-        OUTTAKE_TAKE_SPECIMEN(0.3),
-        OUTTAKE_PUSH_SPECIMEN(1),
+        OUTTAKE_TAKE_SPECIMEN(0.185),
+        OUTTAKE_PUSH_SPECIMEN(0.82),
 
         OUTTAKE_PUSH_BASKET(outtake_push_basket),
-        OUTTAKE_ROTATE_BASKET(0.25),
+        OUTTAKE_ROTATE_BASKET(0.4),
 
         CLAW_OPEN(CLAW_OPEN_V),
         CLAW_CLOSE(CLAW_CLOSE_V),
@@ -29,7 +29,7 @@ public class OuttakeController {
         CLAW_ROTATE_PUSH_SPECIMEN(0.4),
 
         CLAW_ROTATE_TRANSFER(0.8),
-        OUTTAKE_ARM_TRANSFER(0.82);
+        OUTTAKE_ARM_TRANSFER(0.65);
 
 
 

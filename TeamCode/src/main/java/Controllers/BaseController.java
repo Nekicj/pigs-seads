@@ -70,20 +70,19 @@ public class BaseController {
         );
 
 
-
-        odo = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
-        odo.recalibrateIMU();
-        odo.resetPosAndIMU();
+//
+//        odo = hardwareMap.get(GoBildaPinpointDriver.class, "pinpoint");
+//        odo.recalibrateIMU();
+//        odo.resetPosAndIMU();
     }
 
     public void update(double leftX,double leftY,double rightX, double turnCoeff,boolean squareInput){
-        odo.update(GoBildaPinpointDriver.readData.ONLY_UPDATE_HEADING);
+//        odo.update(GoBildaPinpointDriver.readData.ONLY_UPDATE_HEADING);
 
-        drive.driveFieldCentric(
+        drive.driveRobotCentric(
                 leftX,
                 leftY,
                 rightX /turnCoeff,
-                Math.toDegrees(odo.getHeading()),
                 squareInput
         );
     }

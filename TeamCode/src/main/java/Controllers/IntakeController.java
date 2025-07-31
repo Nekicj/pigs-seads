@@ -33,9 +33,9 @@ public class IntakeController {
 
     public static enum Servos{
         CLAW_OPEN(0.545),
-        CLAW_CLOSE(0.498),
+        CLAW_CLOSE(0.46),
 
-        INTAKE_ARM_AIM(0.22),
+        INTAKE_ARM_AIM(0.24),
 
         INTAKE_ARM_TAKE(0.15),
 
