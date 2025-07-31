@@ -36,7 +36,7 @@ public class LiftController {
         HOME(0),
         SPECIMEN_TAKE(0),
         SPECIMEN_PUSH(300),
-        MAX(750),
+        MAX(1100),
         HANG_MAX(2130);//650
 
         Position(int pos){
@@ -124,7 +124,7 @@ public class LiftController {
         double rightLiftCurrent = rightLift.getCurrentPosition();
         double rightLiftPower = rightLiftPidController.calculate(rightLiftCurrent, target);
 
-        leftLift.set(-leftLiftPower);
+        leftLift.set(leftLiftPower);
         rightLift.set(rightLiftPower);
     }
 

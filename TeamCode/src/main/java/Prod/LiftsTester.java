@@ -19,7 +19,7 @@ public class LiftsTester extends LinearOpMode {
     private double liftTargetPosition = 0;
 
     PIDController leftLiftPidController = new PIDController(0.0055, 0, 0);
-    PIDController rightLiftPidController = new PIDController(0.01, 0, 0);
+    PIDController rightLiftPidController = new PIDController(0.0055, 0, 0);
 
     public static double liftTargetChangeSpeed = 2000;
     ElapsedTime elapsedTimer = new ElapsedTime();
@@ -50,9 +50,9 @@ public class LiftsTester extends LinearOpMode {
             double liftPower = 0;
 
             if (gamepad1.left_trigger > 0)
-                liftTargetPosition += 100;
+                liftTargetPosition += 50;
             if (gamepad1.right_trigger > 0)
-                liftTargetPosition -= 100;
+                liftTargetPosition -= 50;
 
 
             if (liftTargetPosition < 0)
@@ -68,10 +68,10 @@ public class LiftsTester extends LinearOpMode {
             double rightLiftCurrent = rightLift.getCurrentPosition();
             double rightLiftPower = rightLiftPidController.calculate(rightLiftCurrent, liftTargetPosition);
 
-            leftLift.set(-leftLiftPower);
-            rightLift.set(rightLiftPower);
+//            leftLift.set(leftLiftPower);
+//            rightLift.set(rightLiftPower);
 
-            telemetry.addData("Lift pos",leftLift.getCurrentPosition());
+            telemetry.addData("target",liftTargetPosition);
             telemetry.addData("Left pose",leftLift.getCurrentPosition());
             telemetry.addData("right pose",rightLift.getCurrentPosition());
             telemetry.update();
