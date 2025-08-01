@@ -8,10 +8,10 @@ public class EncoderTest extends LinearOpMode {
     @Override
     public void runOpMode() {
         // Подключаем моторы с энкодерами
-        DcMotor motor1 = hardwareMap.get(DcMotor.class, "rightBack");
-        DcMotor motor2 = hardwareMap.get(DcMotor.class, "leftBack");
-        DcMotor motor3 = hardwareMap.get(DcMotor.class, "leftFront");
-        DcMotor motor4 = hardwareMap.get(DcMotor.class, "rightFront");
+        DcMotor motor1 = hardwareMap.get(DcMotor.class, "RBack"); //rfront
+        DcMotor motor2 = hardwareMap.get(DcMotor.class, "RFront"); //rback
+        DcMotor motor3 = hardwareMap.get(DcMotor.class, "LBack"); //lback
+        DcMotor motor4 = hardwareMap.get(DcMotor.class, "LFront"); //lfront
 
         // Сбрасываем энкодеры
         motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

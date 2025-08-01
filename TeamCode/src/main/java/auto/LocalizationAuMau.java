@@ -35,15 +35,23 @@ public class LocalizationAuMau extends OpMode {
 
     private int pathState;
     private ElapsedTime stageTimer = new ElapsedTime();
+    private int stage1 = 0;
+
+    private ElapsedTime stageTimer2 = new ElapsedTime();
+    private int stage2 = 0;
+
+    private ElapsedTime stageTimer3 = new ElapsedTime();
+    private int stage3 = 0;
+    private ElapsedTime stageTimer4 = new ElapsedTime();
     private int stage4 = 0;
-
     private ElapsedTime stageTimer5 = new ElapsedTime();
-    private int stage5 = 0;
-
+    private int stage5;
     private ElapsedTime stageTimer6 = new ElapsedTime();
-    private int stage6 = 0;
+    private int stage6;
     private ElapsedTime stageTimer7 = new ElapsedTime();
-    private int stage7 = 0;
+    private int stage7;
+    private ElapsedTime stageTimer8 = new ElapsedTime();
+    private int stage8;
     private boolean hasTakenAtSpec1 = false;
     private Servo IntakeDownServo = null;
     private DelayedAction clawCloseAndGo = new DelayedAction();
@@ -192,119 +200,113 @@ public class LocalizationAuMau extends OpMode {
                     follower.followPath(Score, true);
                     actionsController.setOuttakeToBasket();
                     follower.setMaxPower(0.8);
+                    stageTimer.reset();
+                    stage1 = 1;
                     setPathState(1);
-                    break;
                 }
+                break;
             case 1:
                 if (!follower.isBusy()) {
-                    follower.followPath(toSamp1, true);
-                    follower.setMaxPower(0.8);
-                    setPathState(2);
-                    break;
+                    if (stage1 == 1 && stageTimer.seconds() >= 2) {
+                        follower.followPath(toSamp1, true);
+                        follower.setMaxPower(0.8);
+                        actionsController.setIntakeToTakeAuto();
+                        stageTimer.reset();
+                        stage2 = 1;
+                        setPathState(2);
+                    }
                 }
+                break;
             case 2:
                 if (!follower.isBusy()) {
-                    actionsController.setIntakeToTakeAuto();
-                    follower.setMaxPower(0.8);
-                    setPathState(3);
+                    if (stage2 == 1 && stageTimer.seconds() >= 2) {
+                        follower.followPath(Bomb1, true);
+                        actionsController.setTransferNBusket();
+                        follower.setMaxPower(0.8);
+                        setPathState(3);
+                    }
                 }
+                break;
             case 3:
                 if (!follower.isBusy()) {
-                    follower.followPath(Bomb1, true);
-                    actionsController.setTransferNBusket();
+                    actionsController.setOuttakeToBasket();
                     follower.setMaxPower(0.8);
+                    stageTimer.reset();
+                    stage3 = 1;
                     setPathState(4);
                 }
-//                if (!follower.isBusy()) {
-//                    if (stage4 == 0) {
-//                        follower.followPath(Score, true);
-//                        actionsController.setOuttakeToBasket();
-//                        follower.setMaxPower(0.8);
-//                        stageTimer.reset();
-//                        stage4 = 1;
-//                    }
-//
-//                    if (stage4 == 1 && stageTimer.seconds() >= 4) {
-//                        follower.followPath(toSamp1, true);
-//                        stage4 = 0;
-//                        stageTimer.reset();
-//                    }
-//                    if (stage4 == 2 && stageTimer.seconds() >= 1) { //1 sample
-//                        actionsController.setIntakeToTakeAuto();
-//                        hasTakenAtSpec1 = false;
-//                        setPathState(1);
-//                        stage4 = 0;
-//                    }
-//                }
-//                break;
-//            case 1:
-//                if (!follower.isBusy()) { //
-//                    if (stage5 == 0) {
-//                        stageTimer.reset();
-//                        stage5 = 1;
-//                    }
-//
-//                    if (stage5 == 1 && stageTimer5.seconds() >= 4) { //score 1
-//                        follower.followPath(Bomb1, true);
-//                        actionsController.setOuttakeToBasket();
-//                        follower.setMaxPower(0.8);
-//                        stage5 = 2;
-//                        stageTimer.reset();
-//                    }
-//
-//                    if (stage5 == 2 && stageTimer5.seconds() >= 4) {
-//                        follower.followPath(toSamp2, true);
-//                        actionsController.setIntakeToTakeAuto();
-//                        hasTakenAtSpec1 = false;
-//                        setPathState(2);
-//                        stage5 = 0;
-//                    }
-//                }
-//                break;
-//            case 2:
-//                if (!follower.isBusy()) {
-//                    if (stage6 == 0) {
-//                        stageTimer.reset();
-//                        stage6 = 1;
-//                    }
-//
-//                    if (stage6 == 1 && stageTimer6.seconds() >= 3) {
-//                        follower.followPath(Bomb2, true);
-//                        actionsController.setOuttakeToBasket();
-//                        follower.setMaxPower(0.8);
-//                        stage6 = 2;
-//                        stageTimer.reset();
-//                    }
-//
-//                    if (stage6 == 2 && stageTimer6.seconds() >= 4) {
-//                        follower.followPath(toSamp3, true);
-//                        actionsController.setIntakeToTakeAuto();
-//                        hasTakenAtSpec1 = false;
-//                        setPathState(3);
-//                        stage6 = 0;
-//                    }
-//                }
-//                break;
-//            case 3:
-//                if (!follower.isBusy()) {
-//                    if (stage7 == 0) {
-//                        stageTimer.reset();
-//                        stage7 = 1;
-//                    }
-//
-//                    if (stage7 == 1 && stageTimer7.seconds() >= 3) {
-//                        follower.followPath(Bomb3, true);
-//                        actionsController.setOuttakeToBasket();
-//                        follower.setMaxPower(0.8);
-//                        stage7 = 2;
-//                        stageTimer.reset();
-//                    }
-//
-//                    if (stage7 == 2 && stageTimer7.seconds() >= 3) {
-//                        follower.followPath(Parking);
-//                        stage7 = 0;
-//                        hasTakenAtSpec1 = false;
-//                    }
+                break;
+            case 4:
+                if (!follower.isBusy()) {
+                    if (stage3 == 1 && stageTimer.seconds() >= 2) {
+                        follower.followPath(toSamp2, true);
+                        stageTimer.reset();
+                        setPathState(6);
+                        actionsController.setIntakeToTakeAuto();
+                        hasTakenAtSpec1 = false;
+                        stage4 = 1;
+                        stageTimer.reset();
+                        setPathState(5);
+                    }
+                }
+                break;
+            case 5:
+                if (stage4 == 1 && stageTimer.seconds() >= 2) {
+                    follower.followPath(Bomb2, true);
+                    actionsController.setTransferNBusket();
+                    follower.setMaxPower(0.8);
+                    stageTimer.reset();
+                    setPathState(6);
+                }
+                break;
+            case 6:
+                if (!follower.isBusy()) {
+                    actionsController.setOuttakeToBasket();
+                    hasTakenAtSpec1 = false;
+                    stageTimer.reset();
+                    stage5 = 1;
+                    setPathState(7);
+                }
+                break;
+            case 7:
+                if (!follower.isBusy()) {
+                    if (stage5 == 1 && stageTimer.seconds() >= 2) {
+                        follower.followPath(toSamp3, true);
+                        actionsController.setIntakeToTakeAuto();
+                        follower.setMaxPower(0.8);
+                        stageTimer.reset();
+                        stage6 = 1;
+                        setPathState(8);
+                    }
+                }
+                break;
+            case 8:
+                if (!follower.isBusy()) {
+                    if (stage6 == 1 && stageTimer.seconds() >= 2) {
+                        follower.followPath(Bomb3, true);
+                        actionsController.setTransferNBusket();
+                        follower.setMaxPower(0.8);
+                        setPathState(9);
+                    }
+                }
+                break;
+            case 9:
+                if (!follower.isBusy()){
+                    actionsController.setOuttakeToBasket();
+                    stageTimer.reset();
+                    stage7 = 1;
+                    setPathState(10);
+                }
+                break;
+            case 10:
+                if (!follower.isBusy()){
+                    if (stage7 == 1 && stageTimer.seconds() >=2 ){
+                        follower.followPath(Parking, true);
+                        follower.setMaxPower(0.8);
+                        setPathState(11);
+                        break;
+                    }
+                }
         }
     }
 
@@ -320,28 +322,6 @@ public class LocalizationAuMau extends OpMode {
         autonomousPathUpdate();
         Pose pose = follower.getPose();
         actionsController.update(false);
-//        actionsController.update();
-
-//        if (pathState == 5) {
-//            takeAtSpec1.run(pose, Spec1, 2.0, 1.0, () -> {
-//                OutController.OuttakeTake();
-//            });
-//        }
-//
-//        if (pathState == 6) {
-//            takeAtSpace6.run(pose, toSpace, 2.0, 1.0, () -> {
-//                OutController.OuttakeTake();
-//            });
-//        }
-//
-//        if (pathState == 7) {
-//            takeAtSpace7.run(pose, toSpace, 2.0, 1.0, () -> {
-//                OutController.OuttakeTake();
-//            });
-//        }
-
-
-
 
         // Feedback to Driver Hub
         telemetry.addData("path state", pathState);

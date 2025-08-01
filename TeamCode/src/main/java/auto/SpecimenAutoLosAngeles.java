@@ -19,11 +19,11 @@ import Controllers.OuttakeController;
 import auto.constants.FConstants;
 import auto.constants.LConstants;
 
-@Autonomous(name = "SpecimenAutoDubaiTest", group = "Competition")
-public class SpecimenAutoDubaiTest extends OpMode {
+@Autonomous(name = "SpecimenAutoLosAngeles", group = "Competition")
+public class SpecimenAutoLosAngeles extends OpMode {
 
     private Follower follower;
-   private ActionsController actionsController;
+    private ActionsController actionsController;
     private Servo clawRotate = null;
 
     private Timer pathTimer, opmodeTimer;
@@ -53,7 +53,7 @@ public class SpecimenAutoDubaiTest extends OpMode {
 
     ElapsedTime actionTimer = new ElapsedTime();
 
-//    private final Pose startPose = new Pose(7.77, 55.77, Math.toRadians(0));  // Starting position
+    //    private final Pose startPose = new Pose(7.77, 55.77, Math.toRadians(0));  // Starting position
 //    private final Pose Spec1 = new Pose(37.4, 68.11, 0);
 //    private final Pose way1to1 = new Pose(37.02, 36, 0);
 //    private final Pose way2to1 = new Pose(59.19, 36, 0);
@@ -64,19 +64,19 @@ public class SpecimenAutoDubaiTest extends OpMode {
 //    private final Pose tohp2 = new Pose(19.5,13.94, 0);
 //    private final Pose way1to3 = new Pose(59.19, 7.7, 0 );
 //    private final Pose tohp3 = new Pose(19.5, 7.9, 0);
-private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Starting position
-    private final Pose Spec1 = new Pose(41.8, 68.09, 0);
+    private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Starting position
+    private final Pose Spec1 = new Pose(40.2, 68.09, 0);
     private final Pose CPto1 = new Pose(13.48, 41.12);
     private final Pose Samp1 = new Pose(67.2, 28, 0);
 
     private final Pose toHP = new Pose(21.2, 21.65, 0);
-    private final Pose Samp2 = new Pose(60.27, 13.7, 0);
+    private final Pose Samp2 = new Pose(60.35, 14.3, 0);
     private final Pose CPtoHP = new Pose(61, 18.75);
     private final Pose CPto2 = new Pose(58.7, 27.46);
-    private final Pose Samp3 = new Pose(62.48,9.1, 0);
+    private final Pose Samp3 = new Pose(62.48,9.3, 0);
     private final Pose CPto3 = new Pose(59.15, 18.97);
     private final Pose toHP2 = new Pose(20.2, 9.1, 0);
-    private final Pose toSpace = new Pose(43.8, 70, 0);
+    private final Pose toSpace = new Pose(41.3, 70, 0);
     private final Pose toSpaceCP = new Pose(28.5, 48.8, 0);
     //private final Pose pickyzone = new Pose(14, 33, 0);
 
@@ -203,6 +203,7 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
                 if(!follower.isBusy()) {
                     actionsController.toTakeSpecimen();
                     follower.followPath(Grab1,true);
+                    follower.setMaxPower(0.9);
                     setPathState(2);
                 }
                 break;
@@ -223,7 +224,7 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
             case 4:
                 if(!follower.isBusy()) {
                     follower.followPath(GrabToPick,true);
-                    follower.setMaxPower(0.8);
+                    follower.setMaxPower(0.9);
                     setPathState(5);
 
                 }
@@ -384,6 +385,7 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
             case 16:
                 if(!follower.isBusy()) {
                     follower.followPath(fromClip,true);
+                    actionsController.toTakeSpecimen();
                     setPathState(17);
 
                 }
@@ -447,7 +449,7 @@ private final Pose startPose = new Pose(9.15, 55.8, Math.toRadians(0));  // Star
             Pose currentPose = follower.getPose();
             if (Math.abs(currentPose.getX() - toSpace.getX()) < 2 &&
                     Math.abs(currentPose.getY() - toSpace.getY()) < 2) {
-               // outtakeController.setClawOpen();
+                // outtakeController.setClawOpen();
                 //actionsController.toTakeSpecimen();
                 hasTakenAtSpec1 = true;
             }

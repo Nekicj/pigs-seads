@@ -17,7 +17,7 @@ public class OuttakeController {
 
     public static enum Servos{
         OUTTAKE_TAKE_SPECIMEN(0.185),
-        OUTTAKE_PUSH_SPECIMEN(0.82),
+        OUTTAKE_PUSH_SPECIMEN(0.79),
 
         OUTTAKE_PUSH_BASKET(outtake_push_basket),
         OUTTAKE_ROTATE_BASKET(0.4),

@@ -35,7 +35,7 @@ public class LiftController {
     public enum Position{
         HOME(0),
         SPECIMEN_TAKE(0),
-        SPECIMEN_PUSH(300),
+        SPECIMEN_PUSH(560),
         MAX(1100),
         HANG_MAX(2130);//650
 
