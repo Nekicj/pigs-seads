@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.config.Config;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -20,8 +21,8 @@ public class LiftController {
 
 //    private Servo gearSwitcher = null;
 //
-//    private Servo leftKozel = null;
-//    private Servo rightKozel = null;
+    private CRServo leftKozel = null;
+    private CRServo rightKozel = null;
 
     public static double kP = 0.0055;
     public static double kD = 0;
@@ -36,7 +37,7 @@ public class LiftController {
         HOME(0),
         SPECIMEN_TAKE(0),
         SPECIMEN_PUSH(560),
-        MAX(1100),
+        MAX(1190),
         HANG_MAX(2130);//650
 
         Position(int pos){
@@ -75,12 +76,13 @@ public class LiftController {
     public void initialize(HardwareMap hardwareMap) {
         leftLift = new Motor(hardwareMap, "Llift");
         rightLift = new Motor(hardwareMap, "Rlift");
-//        leftKozel = hardwareMap.get(Servo.class,"leftKozel");
-//        rightKozel = hardwareMap.get(Servo.class,"rightKozel");
+
+        leftKozel = hardwareMap.get(CRServo.class,"leftKozel");
+        rightKozel = hardwareMap.get(CRServo.class,"rightKozel");
 //        gearSwitcher = hardwareMap.get(Servo.class,"gearSwitcher");
-//
-//        leftKozel.setDirection(Servo.Direction.F\ORWARD);
-//        rightKozel.setDirection(Servo.Direction.REVERSE);
+
+        leftKozel.setDirection(CRServo.Direction.FORWARD);
+        rightKozel.setDirection(CRServo.Direction.REVERSE);
 
         leftLift.setInverted(true);
         rightLift.setInverted(false);
@@ -136,9 +138,10 @@ public class LiftController {
 //        }
 //    }
 
-//    public void setKozelPower(double power){
-//        leftKozel.setPosition(power);
-//    }
+    public void setKozelPower(double power){
+        leftKozel.setPower(power);
+        rightKozel.setPower(power);
+    }
 
     public void setTargetPosition(double targetPosition){
         target = targetPosition;
@@ -152,6 +155,8 @@ public class LiftController {
         return Math.abs(leftLift.getCurrentPosition() - target) < tolerance
                 && Math.abs(rightLift.getCurrentPosition() - target) < tolerance;
     }
+
+
 
 
     public void showLogs(Telemetry telemetry) {

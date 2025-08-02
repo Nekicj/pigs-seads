@@ -19,6 +19,10 @@ public class ActionsController {
     public static double TRANSFER_TO_TAKE_SAMPLE = 0.2;
     public static double TRANSFER_TO_BUSKET = 0.15;
 
+    // Intake tehnoz
+    public static double TIME_TEHNOZ_TO_RIGHT = 0.25;
+    public static double TIME_TEHNOZ_TO_DEFAULT = 0.15;
+
 
     //==============================================================================================
 
@@ -124,6 +128,7 @@ public class ActionsController {
         intakeScheduler.scheduleCommand(intakeController::setClawClose);
 
         intakeScheduler.scheduleDelay(INTAKE_TIME_TAKE);
+        intakeScheduler.scheduleDelay(INTAKE_TIME_TAKE);
         intakeScheduler.scheduleCommand(intakeController::setClawClose);
 
         intakeScheduler.scheduleCommand(intakeController::setIntakeAim);
@@ -136,6 +141,19 @@ public class ActionsController {
         intakeScheduler.setAutoReset(false);
 
         intakeScheduler.scheduleCommand(intakeController::setTehnoZ);
+
+        intakeScheduler.scheduleDelay(TIME_TEHNOZ_TO_RIGHT);
+        intakeScheduler.scheduleCommand(intakeController::setTehnoZ);
+
+        intakeScheduler.scheduleCommand(intakeController::setClawOpen);
+
+        intakeScheduler.scheduleDelay(TIME_TEHNOZ_TO_DEFAULT);
+        intakeScheduler.scheduleCommand(intakeController::setTehnoZ);
+
+        intakeScheduler.scheduleCommand(intakeController::setIntakeToTransfer);
+        intakeScheduler.scheduleCommand(()->intakeController.setClawRotatePosition(IntakeController.Servos.INTAKE_CLAW_ROTATE_4.getPos()));
+        intakeScheduler.scheduleCommand(intakeController::setClawClose);
+        intakeScheduler.scheduleCommand(outtakeController::setClawOpen);
 
         intakeScheduler.start();
     }
@@ -195,6 +213,20 @@ public class ActionsController {
 
         outtakeScheduler.scheduleCommand(() -> liftController.setTargetPosition(0));
         outtakeScheduler.scheduleCommand(outtakeController::setOuttakeToTransfer);
+
+        outtakeScheduler.start();
+    }
+
+    public void onKozel(){
+        outtakeScheduler.clearQueue();
+        outtakeScheduler.setAutoReset(false);
+
+        outtakeScheduler.scheduleCommand(() -> liftController.setKozelPower(-1));
+
+        outtakeScheduler.scheduleDelay(0.05);
+        outtakeScheduler.scheduleCommand(() -> liftController.setKozelPower(0));
+
+        outtakeScheduler.scheduleCommand(() -> liftController.setKozelPower(0));
 
         outtakeScheduler.start();
     }

@@ -34,7 +34,9 @@ public class AlohaTeleop extends LinearOpMode {
     public static double liftChangeSpeed = 3000;
 
     public double extendLenght = 0f;
-    public static double extendSpeed = 20;
+    public static double extendSpeed = 7;
+
+    private boolean isFieldCentric = false;
 
 
     @Override
@@ -53,11 +55,19 @@ public class AlohaTeleop extends LinearOpMode {
 
         while (opModeIsActive()){
 
-            if (isExtended){baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),2.5,true);}
-            else{baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),1,true);}
+            if (isExtended){baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),2.5,true,isFieldCentric);}
+            else{baseController.update(driver1.getLeftX(),driver1.getLeftY(),driver1.getRightX(),1,true,isFieldCentric);}
 
             driver1.readButtons();
             driver2.readButtons();
+
+            if (driver2.isDown(GamepadKeys.Button.X)){
+                actionsController.onKozel();
+            }
+
+            if (driver2.wasJustPressed(GamepadKeys.Button.START)){
+                isFieldCentric = !isFieldCentric;
+            }
 
             if (driver2.wasJustPressed(GamepadKeys.Button.RIGHT_BUMPER))     { //TAKE THIS SHIT
                 actionsController.toTakeSpecimen();}
@@ -92,8 +102,9 @@ public class AlohaTeleop extends LinearOpMode {
                 }
             }
 
-            if (driver2.wasJustPressed(GamepadKeys.Button.Y) || driver1.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
+            if (driver2.wasJustPressed(GamepadKeys.Button.DPAD_UP) || driver1.wasJustPressed(GamepadKeys.Button.DPAD_UP)){
                 isExtended = false;
+                isIntakeOpen = true;
                 actionsController.setTransferNBusket();
                 extendLenght = 0;
             }else if(driver2.wasJustPressed(GamepadKeys.Button.A) || driver1.wasJustPressed(GamepadKeys.Button.DPAD_DOWN) ){
@@ -114,6 +125,8 @@ public class AlohaTeleop extends LinearOpMode {
 
             if (driver1.wasJustPressed(GamepadKeys.Button.DPAD_RIGHT)){
                 actionsController.toTehnoZ();
+                isIntakeOpen = false;
+
             }else if (driver1.wasJustPressed(GamepadKeys.Button.DPAD_LEFT)){
                 actionsController.toIntakeLow();
             }

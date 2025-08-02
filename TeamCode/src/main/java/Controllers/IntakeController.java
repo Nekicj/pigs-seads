@@ -35,7 +35,7 @@ public class IntakeController {
         CLAW_OPEN(0.545),
         CLAW_CLOSE(0.46),
 
-        INTAKE_ARM_AIM(0.24),
+        INTAKE_ARM_AIM(0.26),
 
         INTAKE_ARM_TAKE(0.15),
 
@@ -53,8 +53,8 @@ public class IntakeController {
         INTAKE_CLAW_ROTATE_6(0.16),
         INTAKE_CLAW_ROTATE_7(0),
 
-        INTAKE_ARM_TEHNOZ(0.18),
-        INTAKE_KRUTILKA_TEHNOZ(0.2),
+        INTAKE_ARM_TEHNOZ(0.37),
+        INTAKE_KRUTILKA_TEHNOZ(0.04),
         INTAKE_CLAW_ROTATE_TEHNOZ(0.16);
 
 
@@ -96,6 +96,7 @@ public class IntakeController {
 
     public void setTehnoZ(){
         safeSetPosition(leftIntakeArm,Servos.INTAKE_ARM_TEHNOZ.getPos());
+        safeSetPosition(rightIntakeArm,Servos.INTAKE_ARM_TEHNOZ.getPos());
 
         safeSetPosition(intakeKrutilka,Servos.INTAKE_KRUTILKA_TEHNOZ.getPos());
         safeSetPosition(clawRotate,Servos.INTAKE_CLAW_ROTATE_TEHNOZ.getPos());
@@ -109,7 +110,10 @@ public class IntakeController {
 
 
     public void setIntakeTake(){
-        safeSetPosition(leftIntakeArm,Servos.INTAKE_ARM_TAKE.getPos());}
+        safeSetPosition(leftIntakeArm,Servos.INTAKE_ARM_TAKE.getPos());
+        safeSetPosition(rightIntakeArm,Servos.INTAKE_ARM_TAKE.getPos());
+    }
+
 
     public void setIntakeToTransfer(){
         safeSetPosition(leftIntakeArm,Servos.INTAKE_ARM_TRANSFER.getPos());
